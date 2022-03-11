@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block head %}
+	<title>{% trans "蓝鲸开发框架" %}</title>
+	{{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        #footer{
+            position: relative;
+            bottom: -40px;
+        }
+    </style>
+    <div class="page-contactus">
+        <!-- 内容 start-->
+        <!--comtactus-detail -->
+        <div class="container" >
+            <div class="tc" id="contactus">
+                <div class="weixin-img-arrow">
+                    <div>
+                        <img class="weixin-img " src="{{ STATIC_URL }}open/img/weixin_icom.png">
+                    </div>
+                    <p>{% trans "关注我们" %}</p>
+                </div>
+                <div class="comtactus-way-arrow tc mt50">
+                    <div class="dbi border-right tc" style="width: 280px; padding-left: 60px">
+                        <div class="img-arrow">
+                            <img  class="" src="{{ STATIC_URL }}open/img/icom_01.png">
+                        </div>
+                        <p class="mt20">{% trans "深圳市南山区腾讯大厦" %}</p>
+                    </div>
+                    <div class="dbi border-right tc" style="width: 180px">
+                        <div class="img-arrow">
+                            <img src="{{ STATIC_URL }}open/img/icom_02.png">
+                        </div>
+                        <p class="mt20">{% trans "企业QQ：800802001" %}</p>
+                    </div>
+                    <div class="dbi tc" style="width: 280px">
+                        <div class="img-arrow">
+                            <img src="{{ STATIC_URL }}open/img/icom_03.png">
+                        </div>
+                        <p class="mt20">{% trans "邮箱：contactus_bk@tencent.com" %}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 内容 start-->
+    </div>
+{% endblock %}
+
