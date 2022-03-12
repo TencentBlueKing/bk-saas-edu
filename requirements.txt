@@ -27,3 +27,4 @@ gunicorn==19.6.0
 
 blueapps==4.1.1
 
+djangorestframework==3.12.4
