@@ -42,13 +42,12 @@ RUN_MODE = "PRODUCT"
 # )
 
 DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": os.environ.get("BKAPP_DB_NAME"),
-            "USER": os.environ.get("BKAPP_DB_USERNAME"),
-            "PASSWORD": os.environ.get("BKAPP_DB_PASSWORD"),
-            "HOST": os.environ.get("BKAPP_DB_HOST"),
-            "PORT": os.environ.get("BKAPP_DB_PORT"),
-        },
-    }
-
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.environ.get("BKAPP_DB_NAME"),
+        "USER": os.environ.get("BKAPP_DB_USERNAME"),
+        "PASSWORD": os.environ.get("BKAPP_DB_PASSWORD"),
+        "HOST": os.environ.get("BKAPP_DB_HOST"),
+        "PORT": os.environ.get("BKAPP_DB_PORT"),
+    },
+}
