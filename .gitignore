@@ -178,3 +178,6 @@ tests/postman/bkman
 
 # frontend
 vetur.config.js
+.codecc
+
+build.yml

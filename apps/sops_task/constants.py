@@ -2,8 +2,17 @@
 
 # 默认创建者
 DEFAULT_CREATED_BY = "admin"
-# 默认任务状态
-DEFAULT_TASK_STATUS = "created"
+
+
+class TaskStatus(object):
+    # 任务状态
+    CREATED = "CREATED"
+    FAILED = "FAILED"
+    RUNNING = "RUNNING"
+    SUSPENDED = "SUSPENDED"
+    REVOKED = "REVOKED"
+    FINISHED = "FINISHED"
+
 
 # todo mock掉标准运维接口调用
 SOPS_TASK_STATUS_RESULT = {
@@ -363,6 +372,22 @@ CREATE_TASK_RESULT = {
             ],
         },
     },
+}
+
+DEFAULT_CC_BIZ_RESULT = {
+    "result": True,
+    "code": 0,
+    "data": {
+        "count": 3,
+        "info": [
+            {"bk_biz_id": 2, "bk_biz_name": "蓝鲸", "default": 0},
+            {"bk_biz_id": 3, "bk_biz_name": "测试业务", "default": 0},
+            {"bk_biz_id": 11, "bk_biz_name": "update_business", "default": 0},
+        ],
+    },
+    "message": "success",
+    "permission": None,
+    "request_id": "f3d4cb235f964c85867411e74292bab6",
 }
 
 START_TASK_RESULT = {"result": True, "data": {}}

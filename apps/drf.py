@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from functools import wraps
+from typing import Callable
 
 from django.conf import settings
 from django.http import JsonResponse, Http404
@@ -9,17 +10,24 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from django.utils.translation import ugettext as _
 
+from apps.constants import (
+    PAGE_SIZE,
+    PAGE_QUERY_PARAM,
+    PAGE_SIZE_QUERY_PARAM,
+    MAX_PAGE_SIZE,
+)
+
 logger = logging.getLogger("root")
 
 
 class DataPageNumberPagination(PageNumberPagination):
-    page_size = 10
-    page_query_param = "page"
-    page_size_query_param = "pagesize"
-    max_page_size = 1000
+    page_size = PAGE_SIZE
+    page_query_param = PAGE_QUERY_PARAM
+    page_size_query_param = PAGE_SIZE_QUERY_PARAM
+    max_page_size = MAX_PAGE_SIZE
 
     def get_paginated_response(self, data):
-        return Response({"total": self.page.paginator.count, "list": data})
+        return Response({"count": self.page.paginator.count, "info": data})
 
 
 def custom_exception_handler(exc, context):
@@ -74,7 +82,12 @@ def _error(code=None, message="", data=None, errors=None):
     }
 
 
-def insert_permission_field():
+def insert_permission_field(
+    actions,
+    resource_meta,
+    id_field: Callable = lambda item: item["id"],
+    data_field: Callable = lambda data_list: data_list,
+):
     # todo 返回所需权限字段
     """
     数据返回后，插入权限相关字段
@@ -84,6 +97,11 @@ def insert_permission_field():
         @wraps(view_func)
         def wrapped_view(*args, **kwargs):
             response = view_func(*args, **kwargs)
+            result_list = data_field(response.data)
+            # todo mock掉相关权限中心操作
+            for item in result_list:
+                item.setdefault("permission", {})
+                item["permission"].update({"view_task": True})
             return response
 
         return wrapped_view
