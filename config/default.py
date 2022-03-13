@@ -35,6 +35,9 @@ from blueapps.conf.log import get_logging_config_dict
 INSTALLED_APPS += (  # noqa
     "home_application",
     "mako_application",
+    "rest_framework",
+    "django_filters",
+    "apps.sops_task",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
@@ -67,6 +70,14 @@ MIDDLEWARE += ()  # noqa
 
 # 默认数据库AUTO字段类型
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+REST_FRAMEWORK = {
+    "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
+    "SEARCH_PARAM": "keyword",
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "EXCEPTION_HANDLER": "apps.drf.custom_exception_handler",
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+}
 
 # 所有环境的日志级别可以在这里配置
 # LOG_LEVEL = 'INFO'
@@ -106,7 +117,6 @@ LOGGING = get_logging_config_dict(locals())
 # 初始化管理员列表，列表中的人员将拥有预发布环境和正式环境的管理员权限
 # 注意：请在首次提测和上线前修改，之后的修改将不会生效
 INIT_SUPERUSER = []
-
 
 # 使用mako模板时，默认打开的过滤器：h(过滤html)
 MAKO_DEFAULT_FILTERS = ["h"]
