@@ -11,7 +11,7 @@ class ResponseMixin(object):
                 "result": True,
                 "data": response.data,
                 "code": 0,
-                "messages": "ok",
+                "messages": "OK",
             }
         return super(ResponseMixin, self).finalize_response(
             request, response, *args, **kwargs
