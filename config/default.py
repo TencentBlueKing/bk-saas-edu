@@ -79,6 +79,13 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
+if os.getenv("BKAPP_CORS_ENABLED", "on") == "off":
+    # allow all hosts
+    CORS_ORIGIN_ALLOW_ALL = True
+    MIDDLEWARE += ("corsheaders.middleware.CorsMiddleware",)
+    # cookies will be allowed to be included in cross-site HTTP requests
+    CORS_ALLOW_CREDENTIALS = True
+
 # 所有环境的日志级别可以在这里配置
 # LOG_LEVEL = 'INFO'
 
