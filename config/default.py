@@ -79,13 +79,6 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
-if os.getenv("BKAPP_CORS_ENABLED", "on") == "off":
-    # allow all hosts
-    CORS_ORIGIN_ALLOW_ALL = True
-    MIDDLEWARE += ("corsheaders.middleware.CorsMiddleware",)
-    # cookies will be allowed to be included in cross-site HTTP requests
-    CORS_ALLOW_CREDENTIALS = True
-
 # 所有环境的日志级别可以在这里配置
 # LOG_LEVEL = 'INFO'
 
@@ -108,6 +101,10 @@ IS_USE_CELERY = False
 
 # 前后端分离开发配置开关，设置为True时dev和stag环境会自动加载允许跨域的相关选项
 FRONTEND_BACKEND_SEPARATION = False
+
+if os.getenv("BKAPP_CORS_ENABLED", "on") == "off":
+    # allow all hosts
+    FRONTEND_BACKEND_SEPARATION = True
 
 # CELERY 并发数，默认为 2，可以通过环境变量或者 Procfile 设置
 CELERYD_CONCURRENCY = os.getenv("BK_CELERYD_CONCURRENCY", 2)  # noqa
