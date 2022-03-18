@@ -53,15 +53,11 @@ DATABASES = {
     },
 }
 
-FRONTEND_BACKEND_SEPARATION = True
 # 前后端开发模式下支持跨域配置
 if FRONTEND_BACKEND_SEPARATION:
     INSTALLED_APPS += ("corsheaders",)
     # 该跨域中间件需要放在前面
-    MIDDLEWARE = (
-        "apps.middleware.CustomMiddleWare",
-        "corsheaders.middleware.CorsMiddleware",
-    ) + MIDDLEWARE
+    MIDDLEWARE = ("corsheaders.middleware.CorsMiddleware",) + MIDDLEWARE
     CORS_ORIGIN_ALLOW_ALL = True
     CORS_ALLOW_CREDENTIALS = True
 
