@@ -36,12 +36,25 @@
                     max-height=""
                     class="bk-layout-component-gpbomhfl"
                     v-bind:data="taskList"
-                    v-bind:pagination="tablePagination"><bk-table-column label="第一列" prop="prop1" :sortable="false" type=""></bk-table-column>
-                    <bk-table-column label="第二列" prop="prop2" :sortable="false" type=""></bk-table-column>
-                    <bk-table-column label="第三列" prop="prop3" :sortable="false" type=""></bk-table-column>
-                    <bk-table-column label="选项4" width="undefined">
+                    v-bind:pagination="tablePagination">
+                    <bk-table-column label="ID" prop="id" :sortable="false"></bk-table-column>
+                    <bk-table-column label="任务名称" prop="task_name" :sortable="false"></bk-table-column>
+                    <bk-table-column label="任务ID" prop="task_id" :sortable="false"></bk-table-column>
+                    <bk-table-column label="业务ID" prop="bk_biz_id" :sortable="false"></bk-table-column>
+                    <bk-table-column label="模板ID" prop="template_id" :sortable="false"></bk-table-column>
+                    <bk-table-column label="状态" prop="status" :sortable="false"></bk-table-column>
+                    <bk-table-column label="创建人" prop="created_by" :sortable="false"></bk-table-column>
+                    <bk-table-column label="创建时间" prop="created_at" :formatter="timeFormatter" :sortable="false"></bk-table-column>
+                    <bk-table-column label="操作" width="100">
                         <template slot-scope="props">
-                            <a style="color:#3A84FF;cursor:pointer" @click="handleShowTask(props.row)">查看任务</a>
+                            <bk-button
+                                title="primary"
+                                :text="true"
+                                :disabled="!props.row.permission.view_task"
+                                @click="handleShowTask(props.row)"
+                            >
+                                查看任务
+                            </bk-button>
                         </template>
                     </bk-table-column>
                 </bk-table>
@@ -51,11 +64,11 @@
         <bk-sideslider
             :is-show.sync="isShowTaskDetail"
             title="任务详情"
-            :width="400"
+            :width="600"
             class="bk-layout-component-gpbomhfl">
             <template slot="content">
                 <bk-form
-                    :label-width="100"
+                    :label-width="150"
                     :model="deployDetail"
                     v-bkloading="{ isLoading: isTaskDetailLoading }">
                     <bk-form-item
@@ -66,7 +79,7 @@
                         {{ field.value }}
                     </bk-form-item>
                     <bk-form-item>
-                        <bk-link theme="primary" :href="deployDetail.task_url">查看详情</bk-link>
+                        <bk-link theme="primary" :href="deployDetail.task_url" target="_blank">查看详情</bk-link>
                     </bk-form-item>
                 </bk-form>
             </template>
@@ -102,9 +115,9 @@
                             @toggle="handleToggleBizList"
                             @selected="handleSelectBiz">
                             <bk-option v-for="option in bizList"
-                                :key="option.id"
-                                :id="option.id"
-                                :name="option.name">
+                                :key="option.bk_biz_id"
+                                :id="option.bk_biz_id"
+                                :name="option.bk_biz_name">
                             </bk-option>
                         </bk-select>
                     </bk-form-item>
@@ -115,9 +128,9 @@
                             :loading="isTempListLoading"
                             @selected="handleSelectTemp">
                             <bk-option v-for="option in templateList"
-                                :key="option.id"
-                                :id="option.id"
-                                :name="option.name">
+                                :key="option.template_id"
+                                :id="option.template_id"
+                                :name="option.template_name">
                             </bk-option>
                         </bk-select>
                     </bk-form-item>
@@ -134,6 +147,8 @@
     </section>
 </template>
 <script>
+    import dayjs from 'dayjs'
+
     export default {
         data () {
             function getInitVariableValue (defaultValue, defaultValueType) {
@@ -311,7 +326,7 @@
             handleSelectTemp (id) {
                 this.$http.get(`${this.apiPerfix}api/v1/templates/${id}/params/`).then((res) => {
                     const params = res.data || []
-                    this.renderParams = params.map((param) => ({
+                    this.renderParams = Object.values(params).map((param) => ({
                         key: param.key?.slice(2, -1),
                         name: param.name
                     }))
@@ -341,7 +356,7 @@
                     this.deployDetail.fields.forEach((field) => {
                         field.value = data[field.key]
                     })
-                    this.deployDetail.dynamicFields = data.params || []
+                    this.deployDetail.dynamicFields = Object.keys(data.params).map((name) => ({ name, value: data.params[name] })) || []
                     this.deployDetail.task_url = data.task_url
                 }).catch((err) => {
                     this.messageError(err.message || err)
@@ -359,6 +374,10 @@
                 }).finally(() => {
                     this.isRefreshing = false
                 })
+            },
+
+            timeFormatter (obj, con, val) {
+                return val ? dayjs(val).format('YYYY-MM-DD HH:mm:ss') : '--'
             }
         }
     }
