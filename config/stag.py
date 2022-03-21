@@ -35,6 +35,7 @@ if FRONTEND_BACKEND_SEPARATION:
     MIDDLEWARE = ("corsheaders.middleware.CorsMiddleware",) + MIDDLEWARE
     CORS_ORIGIN_ALLOW_ALL = True
     CORS_ALLOW_CREDENTIALS = True
+    CSRF_COOKIE_DOMAIN = os.getenv("BKAPP_CSRF_COOKIE_DOMAIN", None)
 
 # DATABASES.update(
 #     {
