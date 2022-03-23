@@ -57,7 +57,7 @@ coverage.xml
 
 # Django stuff:
 *.log
-config/local_settings.py
+local_settings.py
 
 # Flask stuff:
 instance/
@@ -178,3 +178,6 @@ tests/postman/bkman
 
 # frontend
 vetur.config.js
+.codecc
+
+build.yml
