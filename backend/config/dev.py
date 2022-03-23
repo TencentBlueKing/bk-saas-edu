@@ -70,5 +70,4 @@ except ImportError:
 
 from blueapps.utils.validators import EnvValidator
 
-
 EnvValidator(RUN_VER).validate()
