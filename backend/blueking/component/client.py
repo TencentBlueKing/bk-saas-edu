@@ -77,7 +77,9 @@ class BaseComponentClient(object):
     def get_bk_api_ver(self):
         return self.bk_api_ver
 
-    def merge_params_data_with_common_args(self, method, params, data, enable_app_secret=False):
+    def merge_params_data_with_common_args(
+        self, method, params, data, enable_app_secret=False
+    ):
         """get common args when request"""
         common_args = dict(bk_app_code=self.app_code, **self.common_args)
         if enable_app_secret:
@@ -101,9 +103,26 @@ class BaseComponentClient(object):
         if self.language:
             headers["blueking-language"] = self.language
 
-        params, data = self.merge_params_data_with_common_args(method, params, data, enable_app_secret=True)
-        logger.debug("Calling %s %s with params=%s, data=%s, headers=%s", method, url, params, data, headers)
-        return requests.request(method, url, params=params, data=data, verify=False, headers=headers, **kwargs)
+        params, data = self.merge_params_data_with_common_args(
+            method, params, data, enable_app_secret=True
+        )
+        logger.debug(
+            "Calling %s %s with params=%s, data=%s, headers=%s",
+            method,
+            url,
+            params,
+            data,
+            headers,
+        )
+        return requests.request(
+            method,
+            url,
+            params=params,
+            data=data,
+            verify=False,
+            headers=headers,
+            **kwargs
+        )
 
     def __getattr__(self, key):
         if key not in self.available_collections:
@@ -127,7 +146,9 @@ class ComponentClientWithSignature(BaseComponentClient):
         if self.language:
             headers["blueking-language"] = self.language
 
-        params, data = self.merge_params_data_with_common_args(method, params, data, enable_app_secret=False)
+        params, data = self.merge_params_data_with_common_args(
+            method, params, data, enable_app_secret=False
+        )
         if method == "POST":
             params = {}
 
@@ -139,10 +160,20 @@ class ComponentClientWithSignature(BaseComponentClient):
                 "bk_nonce": random.randint(1, 2147483647),
             }
         )
-        params["bk_signature"] = get_signature(method, url_path, self.app_secret, params=params, data=data)
+        params["bk_signature"] = get_signature(
+            method, url_path, self.app_secret, params=params, data=data
+        )
 
         logger.debug("Calling %s %s with params=%s, data=%s", method, url, params, data)
-        return requests.request(method, url, params=params, data=data, verify=False, headers=headers, **kwargs)
+        return requests.request(
+            method,
+            url,
+            params=params,
+            data=data,
+            verify=False,
+            headers=headers,
+            **kwargs
+        )
 
 
 # 根据是否开启signature来判断使用的Client版本

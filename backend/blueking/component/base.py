@@ -38,7 +38,7 @@ class ComponentAPI(object):
             log_message = [
                 e.error_message,
             ]
-            log_message.append("url=%(url)s" % {"url": e.api_obj.url})
+            log_message.append("url={url}".format(url=e.api_obj.url))
             if e.resp:
                 log_message.append("content: %s" % e.resp.text)
 
@@ -65,14 +65,21 @@ class ComponentAPI(object):
             try:
                 json.dumps(data)
             except Exception:
-                raise ComponentAPIException(self, "Request parameter error (please pass in a dict or json string)")
+                raise ComponentAPIException(
+                    self,
+                    "Request parameter error (please pass in a dict or json string)",
+                )
 
         # Request remote server
         try:
             resp = self.client.request(self.method, self.url, params=params, data=data)
         except Exception as e:
-            logger.exception("Error occurred when requesting method=%s url=%s", self.method, self.url)
-            raise ComponentAPIException(self, u"Request component error, Exception: %s" % str(e))
+            logger.exception(
+                "Error occurred when requesting method=%s url=%s", self.method, self.url
+            )
+            raise ComponentAPIException(
+                self, u"Request component error, Exception: %s" % str(e)
+            )
 
         # Parse result
         if resp.status_code != self.HTTP_STATUS_OK:
@@ -102,5 +109,7 @@ class ComponentAPI(object):
             return json_resp
         except Exception:
             raise ComponentAPIException(
-                self, "Return data format is incorrect, which shall be unified as json", resp=resp
+                self,
+                "Return data format is incorrect, which shall be unified as json",
+                resp=resp,
             )
