@@ -67,3 +67,8 @@ try:
     from local_settings import *  # noqa
 except ImportError:
     pass
+
+from blueapps.utils.validators import EnvValidator
+
+
+EnvValidator(RUN_VER).validate()
