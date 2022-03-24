@@ -23,7 +23,7 @@ docker push ccr.ccs.tencentyun.com/[namespace]/[ImageName]:[镜像版本号]
 
 2. 使用 Arm 架构的机器如何构建 x86 平台镜像
 
-Docker 支持通过 buildx 工具来构建跨平台的镜像，详情请查阅 [官方文档]([https://docs.docker.com/desktop/multi-arch/#multi-arch-support-on-docker-desktop)。
+   Docker 支持通过 buildx 工具来构建跨平台的镜像，详情请查阅: https://docs.docker.com/desktop/multi-arch/#multi-arch-support-on-docker-desktop 。
 
 ```
 docker buildx create --use
