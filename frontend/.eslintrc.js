@@ -25,7 +25,8 @@ module.exports = {
         LOGIN_SERVICE_URL: false,
         AJAX_URL_PREFIX: false,
         ENV: false,
-        define: false
+        define: false,
+        API_URL: false
     },
     // add your custom rules hered
     rules: {

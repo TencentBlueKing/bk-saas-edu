@@ -167,7 +167,7 @@
                     0
                 ),
                 apiPerfix: getInitVariableValue(
-                    { all: 'http://apps.paas-edu.bktencent.com/stag--bk-saas-edu-v3/', prod: '', stag: '' },
+                    { all: API_URL, prod: '', stag: '' },
                     0
                 ),
                 isShowTaskDetail: false,
