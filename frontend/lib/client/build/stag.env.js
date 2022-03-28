@@ -19,5 +19,6 @@ module.exports = {
     NODE_ENV: NODE_ENV,
     USER_INFO_URL: JSON.stringify('/user/getUser'),
     LOGIN_SERVICE_URL: JSON.stringify(process.env.BK_LOGIN_URL),
-    AJAX_URL_PREFIX: JSON.stringify('/api')
+    AJAX_URL_PREFIX: JSON.stringify('/api'),
+    API_URL: JSON.stringify('http://apps.paas-edu.bktencent.com/stag--bk-saas-edu-v3/')
 }
