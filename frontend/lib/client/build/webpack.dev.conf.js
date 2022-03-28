@@ -112,7 +112,11 @@ const webpackConfig = merge(baseConf, {
         }),
 
         new FriendlyErrorsPlugin()
-    ]
+    ],
+
+    proxy: {
+        '/api': 'http://local.paas-edu.bktencent.com:5000'
+    }
 })
 
 module.exports = webpackConfig
