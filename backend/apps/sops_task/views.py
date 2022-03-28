@@ -1,16 +1,15 @@
-from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 # Create your views here.
-from apps.drf import insert_permission_field, check_allowed
+from apps.drf import check_allowed, insert_permission_field
 from apps.model_viewset import CustomModelViewSet
 from apps.sops_task.handlers import (
-    TaskHandler,
     BizHandler,
-    TemplateHandler,
     PermissionHandler,
+    TaskHandler,
+    TemplateHandler,
 )
-
 from apps.sops_task.models import Tasks
 from apps.sops_task.serializers import TaskSerializer
 
@@ -62,7 +61,12 @@ class TemplateViewSet(CustomModelViewSet):
         *args,
         **kwargs,
     ):
-        return Response(TemplateHandler().params(request=request, template_id=pk))
+        bk_biz_id = request.GET.get("bk_biz_id")
+        return Response(
+            TemplateHandler().params(
+                request=request, bk_biz_id=bk_biz_id, template_id=pk
+            )
+        )
 
 
 class PermissionViewSet(CustomModelViewSet):
