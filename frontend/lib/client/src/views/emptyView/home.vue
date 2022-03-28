@@ -324,7 +324,7 @@
             },
 
             handleSelectTemp (id) {
-                this.$http.get(`${this.apiPerfix}api/v1/templates/${id}/params/`).then((res) => {
+                this.$http.get(`${this.apiPerfix}api/v1/templates/${id}/params/?bk_biz_id=${this.newFormData.bk_biz_id}`).then((res) => {
                     const params = res.data || []
                     this.renderParams = Object.values(params).map((param) => ({
                         key: param.key?.slice(2, -1),
