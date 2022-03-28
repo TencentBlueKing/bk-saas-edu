@@ -25,6 +25,6 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {},
-        port: 5000
+        port: 8000
     }
 }
