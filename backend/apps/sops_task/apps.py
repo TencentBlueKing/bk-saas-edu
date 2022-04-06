@@ -14,6 +14,6 @@ class SopsTaskConfig(AppConfig):
             # Executes at sunset in Melbourne
             "update_sops_task_status": {
                 "task": "apps.sops_task.celery.tasks.update_sops_task_status",
-                "schedule": crontab(minute=1),
+                "schedule": crontab(minute="*"),
             },
         }
