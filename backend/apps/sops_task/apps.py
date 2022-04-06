@@ -1,4 +1,3 @@
-from multiprocessing.spawn import import_main_path
 from django.apps import AppConfig
 from celery.schedules import crontab
 
@@ -10,6 +9,7 @@ class SopsTaskConfig(AppConfig):
 
     def ready(self) -> None:
         from apps.sops_task.celery.tasks import update_sops_task_status  # noqa
+        from apps.sops_task.celery.tasks import notify_task_finished  # noqa
         celery_app.conf.beat_schedule = {
             # Executes at sunset in Melbourne
             "update_sops_task_status": {
