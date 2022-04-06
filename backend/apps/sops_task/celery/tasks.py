@@ -1,6 +1,5 @@
 import os
 import logging
-from turtle import title
 from blueapps.core.celery import celery_app
 from bkapi.bk_sops.shortcuts import get_client_by_username as get_sops_client_by_username
 from bkapi_component.open.shortcuts import get_client_by_username
