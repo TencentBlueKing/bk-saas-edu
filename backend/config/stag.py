@@ -49,3 +49,5 @@ if FRONTEND_BACKEND_SEPARATION:
 #         },
 #     }
 # )
+
+DEBUG = True
