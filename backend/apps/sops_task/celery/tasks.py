@@ -35,8 +35,9 @@ def update_sops_task_status():
 
 @celery_app.task
 def notify_task_finished(task_id, task_creator):
-    client = get_client_by_username(os.getenv("SOPS_TASK_FINISH_NOTIFY_USER", "admin"))
+    request_user = os.getenv("SOPS_TASK_FINISH_NOTIFY_USER", "admin")
+    client = get_client_by_username(request_user)
     send_mail_result = client.cmsi.send_mail(
-        dict(receiver__username=task_creator, title="标准运维任务执行完成", content="您的标准运维任务(ID:{})已经执行完成".format(task_id))
+        dict(bk_username=request_user, receiver__username=task_creator, title="标准运维任务执行完成", content="您的标准运维任务(ID:{})已经执行完成".format(task_id))
     )
     logger.info("[notify_task_finished] task %s finish message send result: %s", task_id, send_mail_result)
