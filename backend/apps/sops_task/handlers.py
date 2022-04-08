@@ -138,7 +138,7 @@ class SopsHandler(object):
     @staticmethod
     def call_get_template_info(request, bk_biz_id, template_id):
         client = get_sops_client_by_request(request)
-        return client.api.get_template_list(
+        return client.api.get_template_info(
             path_params={
                 "bk_biz_id": bk_biz_id,
                 "template_id": template_id,
