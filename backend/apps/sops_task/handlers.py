@@ -12,6 +12,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.drf import DataPageNumberPagination
 from apps.sops_task.constants import TaskStatus
+from apps.exceptions import ApiResultError
 from apps.sops_task.models import Tasks
 
 logger = logging.getLogger("root")
@@ -133,7 +134,7 @@ def client_log(func):
         result = func(request, *args, **kwargs)
         logger.info("client response: {}".format(json.dumps(result)))
         if not result.get("result"):
-            raise ValueError(result.get("message"))
+            raise ApiResultError(message=result.get("message"))
         return result
 
     return wrapper
