@@ -50,8 +50,7 @@
                             <bk-button
                                 title="primary"
                                 :text="true"
-                                :disabled="!props.row.permission.view_task"
-                                @click="handleShowTask(props.row)"
+                                @click="handleClickShowTask(props.row)"
                             >
                                 查看任务
                             </bk-button>
@@ -352,6 +351,14 @@
                 })
             },
 
+            handleClickShowTask (row) {
+                if (row.permission.view_task) {
+                    this.handleShowTask(row)
+                } else {
+                    this.showPermissionDialog(row)
+                }
+            },
+
             handleShowTask (row) {
                 this.isShowTaskDetail = true
                 this.isTaskDetailLoading = true
@@ -366,6 +373,22 @@
                     this.messageError(err.message || err)
                 }).finally(() => {
                     this.isTaskDetailLoading = false
+                })
+            },
+
+            showPermissionDialog (row) {
+                this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=view_task&resource_type=task&resource_id=${row.id}`).then((res) => {
+                    this.$bkInfo({
+                        title: '暂无权限',
+                        subTitle: '可以点击申请权限！',
+                        theme: 'danger',
+                        okText: '去申请权限',
+                        confirmFn () {
+                            window.open(res?.data?.apply_url, '_blank')
+                        }
+                    })
+                }).catch((err) => {
+                    this.messageError(err.message || err)
                 })
             },
 
