@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from bkapi.bk_sops.shortcuts import get_client_by_request as get_sops_client_by_request
-from bkapi_component.open.shortcuts import get_client_by_request as get_esb_client_by_request
+from bkapi_component.open.shortcuts import (
+    get_client_by_request as get_esb_client_by_request,
+)
 from django.forms.models import model_to_dict
 from rest_framework.exceptions import ValidationError
 
@@ -41,7 +43,9 @@ class TaskHandler(object):
             task_name=task_name,
             params=params,
         )
-        SopsHandler.call_start_task(request, bk_biz_id=bk_biz_id, task_id=create_task_result["data"]["task_id"])
+        SopsHandler.call_start_task(
+            request, bk_biz_id=bk_biz_id, task_id=create_task_result["data"]["task_id"]
+        )
         task = Tasks.objects.create(
             task_id=create_task_result["data"]["task_id"],
             bk_biz_id=bk_biz_id,
@@ -66,7 +70,9 @@ class TaskHandler(object):
         return model_to_dict(task)
 
     def sync(self, request):
-        tasks = Tasks.objects.filter(status__in=[TaskStatus.CREATED, TaskStatus.RUNNING, TaskStatus.SUSPENDED])
+        tasks = Tasks.objects.filter(
+            status__in=[TaskStatus.CREATED, TaskStatus.RUNNING, TaskStatus.SUSPENDED]
+        )
         for task in tasks:
             sops_task_result = SopsHandler.call_sops_task_status(
                 request, sops_task_id=task.task_id, bk_biz_id=task.bk_biz_id
@@ -89,7 +95,8 @@ class BizHandler(object):
     def list(self, request):
         result = CCHandler.call_search_business(request)
         return [
-            {"bk_biz_id": info["bk_biz_id"], "bk_biz_name": info["bk_biz_name"]} for info in result["data"]["info"]
+            {"bk_biz_id": info["bk_biz_id"], "bk_biz_name": info["bk_biz_name"]}
+            for info in result["data"]["info"]
         ]
 
 
@@ -97,22 +104,35 @@ class TemplateHandler(object):
     def list(self, request, bk_biz_id):
         if not bk_biz_id:
             raise ValidationError("need to supply bk_biz_id in param")
-        result = SopsHandler.call_get_template_list(request, bk_biz_id=bk_biz_id)["data"]
-        return [{"template_id": obj["id"], "template_name": obj["name"]} for obj in result]
+        result = SopsHandler.call_get_template_list(request, bk_biz_id=bk_biz_id)[
+            "data"
+        ]
+        return [
+            {"template_id": obj["id"], "template_name": obj["name"]} for obj in result
+        ]
 
     def params(self, request, template_id, bk_biz_id):
         if not bk_biz_id:
             raise ValidationError("need to supply bk_biz_id in param")
-        result = SopsHandler.call_get_template_info(request, bk_biz_id=bk_biz_id, template_id=template_id)["data"]
+        result = SopsHandler.call_get_template_info(
+            request, bk_biz_id=bk_biz_id, template_id=template_id
+        )["data"]
         return result["pipeline_tree"]["constants"]
 
 
 class PermissionHandler(object):
-    def list(self, request, action_id):
-        if not action_id:
-            raise ValidationError("need to supply action_id in param")
-        # todo mock 权限中心调用
-        return {}
+    def __init__(self, action_id, resource_type, resource_id):
+        self.action_id = action_id
+        self.resource_type = resource_type
+        self.resource_id = resource_id
+
+    def has_permission(self, request):
+        # todo mock 权限中心是否有权限逻辑
+        return {"action_id": self.action_id, "is_allowed": True}
+
+    def get_apply_url(self, request):
+        # todo mock 权限中心获取apply_data及 url
+        return {"apply_url": ""}
 
 
 class SopsHandler(object):
@@ -146,7 +166,9 @@ class SopsHandler(object):
         )
 
     @staticmethod
-    def call_create_task(request, bk_biz_id, template_id, task_name, params: dict = None):
+    def call_create_task(
+        request, bk_biz_id, template_id, task_name, params: dict = None
+    ):
         params = params or {}
         params["name"] = task_name
 
