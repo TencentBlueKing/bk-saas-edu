@@ -1,5 +1,8 @@
 # SaaS 开发课程实战项目
 
+[![license](https://img.shields.io/badge/license-mit-brightgreen.svg?style=flat)](https://github.com/TencentBlueKing/bk-saas-edu/blob/master/LICENSE.txt)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/TencentBlueKing/bk-saas-edu/pulls)
+
 ## 项目介绍
 
 本课程项目要求实现一个蓝鲸 SaaS 应用，具体要求支持以下功能
