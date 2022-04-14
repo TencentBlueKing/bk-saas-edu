@@ -16,6 +16,7 @@ from apps.constants import (
     PAGE_SIZE_QUERY_PARAM,
     MAX_PAGE_SIZE,
 )
+from apps.exceptions import ApiResultError
 
 logger = logging.getLogger("root")
 
@@ -46,6 +47,10 @@ def custom_exception_handler(exc, context):
     # 处理 rest_framework 的异常
     if isinstance(exc, exceptions.APIException):
         return JsonResponse(_error("{}".format(exc.status_code), exc.detail))
+
+    if isinstance(exc, ApiResultError):
+        message = str(exc)
+        return JsonResponse(_error("500", message))
 
     # 处理 Data APP 自定义异常
     if isinstance(exc, BaseException):
