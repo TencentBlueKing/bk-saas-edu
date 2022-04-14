@@ -121,11 +121,18 @@ class TemplateHandler(object):
 
 
 class PermissionHandler(object):
-    def list(self, request, action_id):
-        if not action_id:
-            raise ValidationError("need to supply action_id in param")
-        # todo mock 权限中心调用
-        return {}
+    def __init__(self, action_id, resource_type, resource_id):
+        self.action_id = action_id
+        self.resource_type = resource_type
+        self.resource_id = resource_id
+
+    def has_permission(self, request):
+        # todo mock 权限中心是否有权限逻辑
+        return {"action_id": self.action_id, "is_allowed": True}
+
+    def get_apply_url(self, request):
+        # todo mock 权限中心获取apply_data及 url
+        return {"apply_url": ""}
 
 
 class SopsHandler(object):
