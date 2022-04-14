@@ -316,6 +316,10 @@
                 this.isTempListLoading = false
                 this.$http.get(`${this.apiPerfix}api/v1/templates/?bk_biz_id=${id}`).then((res) => {
                     this.templateList = res.data || []
+                    // 清空选中的模板
+                    this.newFormData.template_id = ''
+                    // 清空动态表单
+                    this.renderParams = []
                 }).catch((err) => {
                     this.messageError(err.message || err)
                 }).finally(() => {
