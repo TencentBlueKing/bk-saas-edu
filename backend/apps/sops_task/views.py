@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 # Create your views here.
-from apps.drf import insert_permission_field, check_allowed
+from apps.drf import insert_permission_field
 from apps.model_viewset import CustomModelViewSet
 from apps.sops_task.handlers import (
     TaskHandler,
@@ -28,14 +28,12 @@ class TaskViewSet(CustomModelViewSet):
     def list(self, request, *args, **kwargs):
         return TaskHandler().list(request=request, view=self)
 
-    @check_allowed()
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         params = dict(serializer.data)
         return Response(TaskHandler().create(request=request, **params))
 
-    @check_allowed()
     def retrieve(self, request, pk=None, *args, **kwargs):
         return Response(TaskHandler().retrieve(id=pk))
 
@@ -66,6 +64,38 @@ class TemplateViewSet(CustomModelViewSet):
 
 
 class PermissionViewSet(CustomModelViewSet):
-    def list(self, request, *args, **kwargs):
+    @action(methods=["GET"], detail=False)
+    def has_permission(
+        self,
+        request,
+        *args,
+        **kwargs,
+    ):
         action_id = request.GET.get("action_id")
-        return Response(PermissionHandler().list(request=request, action_id=action_id))
+        resource_type = request.GET.get("resource_type")
+        resource_id = request.GET.get("resource_type")
+        return Response(
+            PermissionHandler(
+                action_id=action_id,
+                resource_type=resource_type,
+                resource_id=resource_id,
+            ).has_permission(request=request)
+        )
+
+    @action(methods=["GET"], detail=False)
+    def get_apply_url(
+        self,
+        request,
+        *args,
+        **kwargs,
+    ):
+        action_id = request.GET.get("action_id")
+        resource_type = request.GET.get("resource_type")
+        resource_id = request.GET.get("resource_type")
+        return Response(
+            PermissionHandler(
+                action_id=action_id,
+                resource_type=resource_type,
+                resource_id=resource_id,
+            ).get_apply_url(request=request)
+        )
