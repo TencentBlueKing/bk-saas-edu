@@ -1,6 +1,9 @@
-# SaaS开发课程项目
+# SaaS 开发课程实战项目
 
-## 1. 项目介绍
+[![license](https://img.shields.io/badge/license-mit-brightgreen.svg?style=flat)](https://github.com/TencentBlueKing/bk-saas-edu/blob/master/LICENSE.txt)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/TencentBlueKing/bk-saas-edu/pulls)
+
+## 项目介绍
 
 本课程项目要求实现一个蓝鲸 SaaS 应用，具体要求支持以下功能
 
@@ -8,24 +11,24 @@
 2. 由于任务创建操作比较敏感，所以需要对用户的操作进行鉴权。需要将本应用接入权限中心，完成权限的管理。需要引入权限中心发布的IAM SDK，然后根据help文件夹《权限中心SDK使用说明》，完成权限模型的注册。
 3. 需要实现 **任务查看**, **任务创建** 两个操作的用户鉴权。当无对应操作权限的时候，需要提供改操作申请权限链接并展示在页面，方便用户点击跳转权限中心申请对应权限。
 
-## 2. 项目图示
+## 项目图示
 
 本项目所需要实现的SaaS应为分为前端和后台两部分
 
-### 2.1 前端
+### 1. 前端
 作为用户入口，提供给用户查看任务，新建任务页面
 页面实现效果参考展示如下（仅供参考）：
 
 ![main.png](src/list.png)
 
-### 2.2 后台
+### 2. 后台
 1.	API模块：提供查询任务，创建/执行任务，业务拉取，标准运维模板拉取等接口
 2.	权限模块：实现权限模型注册，操作鉴权等功能
 3.	Celery模块：实现标准运维任务状态的同步
 
-## 3. 功能解析
+## 功能解析
 
-### 3.1 任务管理
+### 1. 任务管理
 
 应用需要拉取到标准运维流程模板并渲染任务参数表单（注意：不同模板需要的任务参数不相同）。填写参数后创建并执行标准运维任务；列表需要展示正在执行或已执行的任务。
 
@@ -52,11 +55,11 @@
 
     ![sops.png](src/sops.png)
 
-### 3.2 权限中心注册权限模型
+### 2. 权限中心注册权限模型
 基本要求：成功注册权限模型，可以在权限中心申请权限页面看到注册的权限内容，具体检查页面如下。（仅供参考）
 ![iam.png](src/iam.png)
 
-### 3.3 操作鉴权
+### 3. 操作鉴权
 1.	获取任务列表接口需要调用IAM SDK检查用户是否有本系统的任务查看权限，有任务查看权限的可以看到所有任务，否则只能看到自己创建的任务。
 2.	点击创建任务按钮时，需要检测当前用户是否拥有任务创建权限，如果没有，则需要生成权限申请URL （注意该URL为后台动态生成），通过弹窗等方式提示用户，并允许用户点击该URL跳转到对应的权限申请页面
 3.	任务创建接口需要调用 IAM SDK 检查用户是否有任务创建权限，如果没有则拒绝创建，并返回提示信息给用户
@@ -65,7 +68,7 @@
 
 
 
-## 4. 项目规划
+## Roadmap
 
 本项目将结合我们的课程分为五个部分
 
@@ -96,3 +99,41 @@
 ### 【Part 5】权限中心接入
 - 注册本项目的权限模型到权限中心（任务创建，执行记录查看）
 - 对后台提供的接口结合iam sdk进行鉴权
+
+
+## Support
+
+- [wiki](https://github.com/Tencent/bk-sops/wiki)
+
+- [白皮书](http://docs.bk.tencent.com/product_white_paper/gcloud/)
+
+- [蓝鲸论坛](https://bk.tencent.com/s-mart/community)
+
+- [蓝鲸 DevOps 在线视频教程](https://cloud.tencent.com/developer/edu/major-100008)
+
+- [蓝鲸社区版交流1群](https://jq.qq.com/?_wv=1027&k=5zk8F7G)
+
+## BlueKing Community
+
+- [BK-CMDB](https://github.com/Tencent/bk-cmdb)：蓝鲸配置平台（蓝鲸 CMDB）是一个面向资产及应用的企业级配置管理平台。
+
+- [BK-CI](https://github.com/Tencent/bk-ci)：蓝鲸持续集成平台是一个开源的持续集成和持续交付系统，可以轻松将你的研发流程呈现到你面前。
+
+- [BK-BCS](https://github.com/Tencent/bk-bcs)：蓝鲸容器管理平台是以容器技术为基础，为微服务业务提供编排管理的基础服务平台。
+
+- [BK-BCS-SaaS](https://github.com/Tencent/bk-bcs-saas)：蓝鲸容器管理平台 SaaS 基于原生 Kubernetes 和 Mesos 自研的两种模式，提供给用户高度可扩展、灵活易用的容器产品服务。
+
+- [BK-PaaS](https://github.com/Tencent/bk-paas)：蓝鲸 PaaS 平台是一个开放式的开发平台，让开发者可以方便快捷地创建、开发、部署和管理 SaaS 应用。
+
+- [BK-SOPS](https://github.com/Tencent/bk-sops)：标准运维（SOPS）是通过可视化的图形界面进行任务流程编排和执行的系统，是蓝鲸体系中一款轻量级的调度编排类 SaaS 产品。
+
+- [BK-JOB](https://github.com/Tencent/bk-job) 蓝鲸作业平台(Job)是一套运维脚本管理系统，具备海量任务并发处理能力。
+
+## Contributing
+
+如果你有好的意见或建议，欢迎给我们提 Issues 或 Pull Requests，为蓝鲸开源社区贡献力量。
+
+
+## License
+
+基于 MIT 协议， 详细请参考[LICENSE](LICENSE.txt)
