@@ -112,16 +112,3 @@ def insert_permission_field(
         return wrapped_view
 
     return wrapper
-
-
-def check_allowed():
-    # todo 确定是否具有权限
-    def wrapper(view_func):
-        @wraps(view_func)
-        def wrapped_view(*args, **kwargs):
-            response = view_func(*args, **kwargs)
-            return response
-
-        return wrapped_view
-
-    return wrapper
