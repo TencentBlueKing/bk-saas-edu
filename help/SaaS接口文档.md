@@ -385,13 +385,15 @@ GET api/v1/tasks/sync/
 - 请求方法及URL
 
 ```
-GET api/v1/permissions/
+GET api/v1/permissions/has_permission/
 ```
 
 - 请求参数示例
 
 ```json
-?action_id=create_ticket
+?action_id=view_task&resource_type=task&resource_id=10
+or
+?action_id=create_task
 ```
 
 - 返回结果示例
@@ -402,7 +404,10 @@ GET api/v1/permissions/
 {
     "result": true,
     "code": 0,
-    "data": {},
+    "data": {
+      "action_id":"create_task",
+      "is_allowed": true
+    },
     "message": "OK"
 } 
 ```
@@ -411,12 +416,13 @@ GET api/v1/permissions/
 
 ```json
 {
-    "result": false,
-    "code": 9900403,
+    "result": true,
+    "code": 0,
     "data": {
-      "url":"xxxxxxx"
+      "action_id":"create_task",
+      "is_allowed": false
     },
-    "message": "NO PERMISSIONS"
+    "message": "OK"
 } 
 ```
 
@@ -433,12 +439,58 @@ data
 
 | 字段 | 类型   | 必选 | 描述          |
 | :--- | ------ | ---- | ------------- |
-| url  | string | 是   | 无权限申请url |
+| action_id  | string | 是   | 资源id create_task or view_task|
+| is_allowed  | bool | 是   | 是否有权限|
 
-## 
+
+## [API-08] 获取授权url
+
+- 请求方法及URL
+
+```
+GET api/v1/permissions/get_apply_url/
+```
+
+- 请求参数示例
+
+```json
+?action_id=view_task&resource_type=task&resource_id=10
+or
+?action_id=create_task
+```
+
+- 返回结果示例
+
+```json
+{
+    "result": true,
+    "code": 0,
+    "data": {
+      "apply_url": "www.test.com"
+    },
+    "message": "OK"
+} 
+```
+
+- 返回结果参数说明
+
+| 字段    | 类型   | 描述                              |
+| ------- | ------ | --------------------------------- |
+| result  | bool   | 返回结果，true为成功，false为失败 |
+| code    | int    | 返回码，0表示成功，其他值表示失败 |
+| message | string | 错误信息                          |
+| data    | dict   | 结果                              |
+
+data
+
+| 字段 | 类型   | 必选 | 描述          |
+| :--- | ------ | ---- | ------------- |
+| apply_url  | string | 是   | 授权地址|
 
 
-## [API-08] 查询task详情
+
+
+## [API-09] 查询task详情
 
 - 请求方法及URL
 ```
