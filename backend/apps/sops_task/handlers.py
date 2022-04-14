@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import functools
+import json
+import logging
+
 from bkapi.bk_sops.shortcuts import get_client_by_request as get_sops_client_by_request
 from bkapi_component.open.shortcuts import (
     get_client_by_request as get_esb_client_by_request,
@@ -8,7 +12,10 @@ from rest_framework.exceptions import ValidationError
 
 from apps.drf import DataPageNumberPagination
 from apps.sops_task.constants import TaskStatus
+from apps.exceptions import ApiResultError
 from apps.sops_task.models import Tasks
+
+logger = logging.getLogger("root")
 
 
 class TaskHandler(object):
@@ -120,6 +127,19 @@ class TemplateHandler(object):
         return result["pipeline_tree"]["constants"]
 
 
+def client_log(func):
+    @functools.wraps(func)
+    def wrapper(request, *args, **kwargs):
+        logger.info("client request: args: {}, kwargs: {}".format(args, kwargs))
+        result = func(request, *args, **kwargs)
+        logger.info("client response: {}".format(json.dumps(result)))
+        if not result.get("result"):
+            raise ApiResultError(message=result.get("message"))
+        return result
+
+    return wrapper
+
+
 class PermissionHandler(object):
     def __init__(self, action_id, resource_type, resource_id):
         self.action_id = action_id
@@ -137,6 +157,7 @@ class PermissionHandler(object):
 
 class SopsHandler(object):
     @staticmethod
+    @client_log
     def call_sops_task_status(request, bk_biz_id, sops_task_id):
         client = get_sops_client_by_request(request)
         return client.api.get_task_status(
@@ -147,6 +168,7 @@ class SopsHandler(object):
         )
 
     @staticmethod
+    @client_log
     def call_get_template_list(request, bk_biz_id):
         client = get_sops_client_by_request(request)
         return client.api.get_template_list(
@@ -156,6 +178,7 @@ class SopsHandler(object):
         )
 
     @staticmethod
+    @client_log
     def call_get_template_info(request, bk_biz_id, template_id):
         client = get_sops_client_by_request(request)
         return client.api.get_template_info(
@@ -166,6 +189,7 @@ class SopsHandler(object):
         )
 
     @staticmethod
+    @client_log
     def call_create_task(
         request, bk_biz_id, template_id, task_name, params: dict = None
     ):
@@ -182,6 +206,7 @@ class SopsHandler(object):
         )
 
     @staticmethod
+    @client_log
     def call_start_task(request, bk_biz_id, task_id):
         client = get_sops_client_by_request(request)
         return client.api.start_task(
@@ -194,6 +219,7 @@ class SopsHandler(object):
 
 class CCHandler(object):
     @staticmethod
+    @client_log
     def call_search_business(request):
         # 创建 ESB SDK 客户端
         client = get_esb_client_by_request(request)
