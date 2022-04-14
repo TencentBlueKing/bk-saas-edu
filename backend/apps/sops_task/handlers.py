@@ -148,11 +148,11 @@ class PermissionHandler(object):
 
     def has_permission(self, request):
         # todo mock 权限中心是否有权限逻辑
-        return {"action_id": self.action_id, "is_allowed": True}
+        return True
 
     def get_apply_url(self, request):
         # todo mock 权限中心获取apply_data及 url
-        return {"apply_url": ""}
+        return ""
 
 
 class SopsHandler(object):
