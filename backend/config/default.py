@@ -38,6 +38,8 @@ INSTALLED_APPS += (  # noqa
     "rest_framework",
     "django_filters",
     "apps.sops_task",
+    "bk_iam",
+    "iam.contrib.iam_migration",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
@@ -139,8 +141,8 @@ TIME_ZONE = "Asia/Shanghai"
 LANGUAGE_CODE = "zh-hans"
 
 LANGUAGES = (
-    ("en", u"English"),
-    ("zh-hans", u"简体中文"),
+    ("en", "English"),
+    ("zh-hans", "简体中文"),
 )
 
 """
@@ -176,6 +178,20 @@ if locals().get("DISABLED_APPS"):
     for _app, _key in itertools.product(DISABLED_APPS, _keys):
         if locals().get(_key) is None:
             continue
-        locals()[_key] = tuple(
-            [_item for _item in locals()[_key] if not _item.startswith(_app + ".")]
-        )
+        locals()[_key] = tuple([_item for _item in locals()[_key] if not _item.startswith(_app + ".")])
+
+# 权限中心配置, reference: https://github.com/TencentBlueKing/iam-python-sdk/blob/master/docs/usage.md#2-iam-migration
+# 系统id, 同app_code一致
+# BK_IAM_SYSTEM_ID = "bk-saas-edu-v3"
+BK_IAM_SYSTEM_ID = os.environ.get("BKPAAS_APP_ID")
+# 用于存放iam django migration文件的app
+BK_IAM_MIGRATION_APP_NAME = "bk_iam"
+# 环境的域名地址, 用于注册system是替换掉provider.config.host,
+# 发布到正式环境后访问地址是 PAAS_HOST + /o/{app_code}
+BK_IAM_RESOURCE_API_HOST = f"https://paas-edu.bktencent.com/o/{BK_IAM_SYSTEM_ID}/"
+
+BK_IAM_USE_APIGATEWAY = True
+# https://bkapi.paas-edu.bktencent.com
+BK_COMPONENT_API_URL = os.environ.get("BK_COMPONENT_API_URL", "")
+BK_IAM_APIGATEWAY_URL = f"{BK_COMPONENT_API_URL}/api/bk-iam/prod"
+# BK_IAM_APIGATEWAY_URL = "http://bk-iam.{APIGATEWAY_DOMAIN}/{env}"
