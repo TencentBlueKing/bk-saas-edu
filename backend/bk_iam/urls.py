@@ -11,4 +11,11 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 
-# TODO: add call back implements here
+from django.conf.urls import url
+
+from blueapps.account.decorators import login_exempt
+from bk_iam.views import dispatcher
+
+urlpatterns = [
+    url(r'^api/v1/iam/tasks$', dispatcher.as_view([login_exempt]))
+]
