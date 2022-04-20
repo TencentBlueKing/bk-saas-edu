@@ -16,16 +16,13 @@ from django.conf import settings
 from iam import IAM, Request, Subject, Action, Resource
 
 
-SYSTEM_ID = settings.BK_IAM_SYSTEM_ID
-
-
 class Permission(object):
     def __init__(self):
         self._iam = IAM(settings.APP_CODE, settings.SECRET_KEY, bk_apigateway_url=settings.BK_IAM_APIGATEWAY_URL)
 
     def _make_request_without_resources(self, username, action_id):
         request = Request(
-            SYSTEM_ID,
+            settings.BK_IAM_SYSTEM_ID,
             Subject("user", username),
             Action(action_id),
             None,
@@ -35,7 +32,7 @@ class Permission(object):
 
     def _make_request_with_resources(self, username, action_id, resources):
         request = Request(
-            SYSTEM_ID,
+            settings.BK_IAM_SYSTEM_ID,
             Subject("user", username),
             Action(action_id),
             resources,
@@ -48,7 +45,7 @@ class Permission(object):
         return self._iam.is_allowed(request)
 
     def allowed_task_view(self, username, task_id):
-        r = Resource(SYSTEM_ID, 'task', task_id, {})
+        r = Resource(settings.BK_IAM_SYSTEM_ID, 'task', task_id, {})
         resources = [r]
         request = self._make_request_with_resources(username, "task_view", resources)
         return self._iam.is_allowed(request)
