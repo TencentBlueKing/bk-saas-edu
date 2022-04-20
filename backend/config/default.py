@@ -188,8 +188,8 @@ if locals().get("DISABLED_APPS"):
 # 权限中心配置, reference: https://github.com/TencentBlueKing/iam-python-sdk/blob/master/docs/usage.md#2-iam-migration
 # 系统id, 同app_code一致
 # BK_IAM_SYSTEM_ID = "bk-saas-edu-v3"
-from config import APP_ID
-BK_IAM_SYSTEM_ID = APP_ID
+from config import APP_CODE
+BK_IAM_SYSTEM_ID = APP_CODE
 # 用于存放iam django migration文件的app
 BK_IAM_MIGRATION_APP_NAME = "bk_iam"
 # 环境的域名地址, 用于注册system是替换掉provider.config.host,
@@ -202,8 +202,8 @@ satge_only_addr = {item['key']['bk_app_code']: item['value']['stage'] for item i
 prod_only_addr = {item['key']['bk_app_code']: item['value']['prod'] for item in bk_saas_addresses}
 
 # 注册的回调地址
-BK_IAM_RESOURCE_API_HOST = (prod_only_addr[APP_ID] if os.environ.get('BKPAAS_ENVIRONMENT') == 'prod'
-                            else satge_only_addr[APP_ID])
+BK_IAM_RESOURCE_API_HOST = (prod_only_addr[APP_CODE] if os.environ.get('BKPAAS_ENVIRONMENT') == 'prod'
+                            else satge_only_addr[APP_CODE])
 
 BK_IAM_USE_APIGATEWAY = True
 # https://bkapi.paas-edu.bktencent.com
