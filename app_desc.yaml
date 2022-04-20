@@ -20,3 +20,7 @@ modules:
     processes:
       web:
         command: npm run online
+svc_discovery:
+    bk_saas:
+        - bk_app_code: 'bk-saas-edu-v3'
+          module_name: 'default'
