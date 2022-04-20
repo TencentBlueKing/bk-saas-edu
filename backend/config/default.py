@@ -11,6 +11,11 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 
+import os
+import json
+import os
+import base64
+
 from blueapps.conf.default_settings import *  # noqa
 from blueapps.conf.log import get_logging_config_dict
 
@@ -183,12 +188,22 @@ if locals().get("DISABLED_APPS"):
 # 权限中心配置, reference: https://github.com/TencentBlueKing/iam-python-sdk/blob/master/docs/usage.md#2-iam-migration
 # 系统id, 同app_code一致
 # BK_IAM_SYSTEM_ID = "bk-saas-edu-v3"
-BK_IAM_SYSTEM_ID = os.environ.get("BKPAAS_APP_ID")
+from config import APP_ID
+BK_IAM_SYSTEM_ID = APP_ID
 # 用于存放iam django migration文件的app
 BK_IAM_MIGRATION_APP_NAME = "bk_iam"
 # 环境的域名地址, 用于注册system是替换掉provider.config.host,
-# 发布到正式环境后访问地址是 PAAS_HOST + /o/{app_code}
-BK_IAM_RESOURCE_API_HOST = f"https://paas-edu.bktencent.com/o/{BK_IAM_SYSTEM_ID}/"
+# BK_IAM_RESOURCE_API_HOST = f"https://paas-edu.bktencent.com/o/{BK_IAM_SYSTEM_ID}/"
+
+# 以下逻辑是为了获取自己 saas 部署之后的访问地址, 用于注册iam回调
+bk_saas_addresses_env_value = value = os.environ['BKPAAS_SERVICE_ADDRESSES_BKSAAS']
+bk_saas_addresses = json.loads(base64.b64decode(bk_saas_addresses_env_value).decode('utf-8'))
+satge_only_addr = {item['key']['bk_app_code']: item['value']['stage'] for item in bk_saas_addresses}
+prod_only_addr = {item['key']['bk_app_code']: item['value']['prod'] for item in bk_saas_addresses}
+
+# 注册的回调地址
+BK_IAM_RESOURCE_API_HOST = (prod_only_addr[APP_ID] if os.environ.get('BKPAAS_ENVIRONMENT') == 'prod'
+                            else satge_only_addr[APP_ID])
 
 BK_IAM_USE_APIGATEWAY = True
 # https://bkapi.paas-edu.bktencent.com
