@@ -13,7 +13,11 @@ specific language governing permissions and limitations under the License.
 
 from django.conf import settings
 
+from apps.sops_task.models import Tasks
+
 from iam import IAM, Request, Subject, Action, Resource
+from iam.apply.models import ActionWithoutResources, ActionWithResources, Application, RelatedResourceType, ResourceInstance, ResourceNode
+from common.constants import ActionEnum, ResourceTypeEnum
 
 
 class Permission(object):
@@ -41,11 +45,61 @@ class Permission(object):
         return request
 
     def allowed_task_create(self, username):
-        request = self._make_request_without_resources(username, "task_create")
+        request = self._make_request_without_resources(username, ActionEnum.TASK_CREATE.value)
         return self._iam.is_allowed(request)
 
     def allowed_task_view(self, username, task_id):
-        r = Resource(settings.BK_IAM_SYSTEM_ID, 'task', task_id, {})
+        r = Resource(settings.BK_IAM_SYSTEM_ID, ResourceTypeEnum.TASK.value, task_id, {})
         resources = [r]
-        request = self._make_request_with_resources(username, "task_view", resources)
+        request = self._make_request_with_resources(username, ActionEnum.TASK_VIEW.value, resources)
         return self._iam.is_allowed(request)
+
+    def batch_allowed_task_view(self, username, task_ids):
+        resources_list = []
+        for task_id in task_ids:
+            r = Resource(settings.BK_IAM_SYSTEM_ID, ResourceTypeEnum.TASK.value, task_id, {})
+            resources = [r]
+            resources_list.append(resources)
+
+        # 注意这里resources字段空
+        request = Request(
+            "bk_sops",
+            Subject("user", username),
+            Action(ActionEnum.TASK_VIEW.value),
+            [],
+            None
+        )
+
+        return self._iam.batch_allowed(request, resources_list)
+
+    def make_action_application(self, action_id):
+        action = ActionWithoutResources(action_id)
+        actions = [action]
+        application = Application(settings.BK_IAM_SYSTEM_ID, actions)
+        return application
+
+    def make_task_application(self, task_id):
+        task_name = f"task:{task_id}"
+        try:
+            task_name = Tasks.objects.get(id=task_id).task_name
+        except Exception:
+            pass
+
+        instance = ResourceInstance([ResourceNode(ResourceTypeEnum.TASK.value, task_id, task_name)])
+        related_resource_type = RelatedResourceType(settings.BK_IAM_SYSTEM_ID, ResourceTypeEnum.TASK.value, [instance])
+
+        action = ActionWithResources(ActionEnum.TASK_VIEW.value, [related_resource_type])
+
+        actions = [action]
+
+        application = Application(settings.BK_IAM_SYSTEM_ID, actions)
+        return application
+
+    def generate_apply_url(self, application, bk_username=""):
+        """
+        处理无权限 - 跳转申请列表
+        """
+        ok, message, url = self._iam.get_apply_url(application, bk_username=bk_username)
+        if not ok:
+            return ""
+        return

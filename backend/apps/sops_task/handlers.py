@@ -14,6 +14,8 @@ from apps.drf import DataPageNumberPagination
 from apps.sops_task.constants import TaskStatus
 from apps.exceptions import ApiResultError
 from apps.sops_task.models import Tasks
+from common.permission import Permission
+from common.constants import ActionEnum
 
 logger = logging.getLogger("root")
 
@@ -148,10 +150,23 @@ class PermissionHandler(object):
 
     def has_permission(self, request):
         # todo mock 权限中心是否有权限逻辑
-        return True
+        if self.action_id == ActionEnum.TASK_VIEW.value:
+            return Permission().allowed_task_view(request.user.username, self.resource_id)
+        elif self.action_id == ActionEnum.TASK_CREATE.value:
+            return Permission().allowed_task_create(request.user.username)
+        return False
 
     def get_apply_url(self, request):
         # todo mock 权限中心获取apply_data及 url
+        if self.action_id == ActionEnum.TASK_VIEW.value:
+            p = Permission()
+            application = p.make_task_application(self.resource_id)
+            return p.generate_apply_url(application, request.user.username)
+        elif self.action_id == ActionEnum.TASK_CREATE.value:
+            p = Permission()
+            application = p.make_action_application(self.action_id)
+            return p.generate_apply_url(application, request.user.username)
+
         return ""
 
 
