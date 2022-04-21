@@ -199,6 +199,9 @@ BK_IAM_MIGRATION_APP_NAME = "bk_iam"
 bk_saas_addresses_env_value = value = os.environ['BKPAAS_SERVICE_ADDRESSES_BKSAAS']
 bk_saas_addresses = json.loads(base64.b64decode(bk_saas_addresses_env_value).decode('utf-8'))
 
+print("======== the env value: ", bk_saas_addresses_env_value)
+print("======== the value: ", bk_saas_addresses)
+
 stage_only_addr = {APP_CODE: ""}
 prod_only_addr = {APP_CODE: ""}
 if bk_saas_addresses:
