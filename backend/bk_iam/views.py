@@ -21,16 +21,9 @@ from apps.sops_task.models import Tasks
 # reference: https://github.com/TencentBlueKing/iam-python-sdk/blob/master/docs/usage.md#3-resource-api-framework
 
 class TaskResourceProvider(ResourceProvider):
-    def list_attr(self, **options):
-        return ListResult(results=[])
-
-    def list_attr_value(self, filter, page, **options):
-        return ListResult(results=[])
-
-    def list_instance_by_policy(self, filter, page, **options):
-        return ListResult(results=[], count=0)
-
     def list_instance(self, filter, page, **options):
+        """配置权限时的下拉列表
+        """
         queryset = Tasks.objects.all()
         count = queryset.count()
         results = [
@@ -39,7 +32,19 @@ class TaskResourceProvider(ResourceProvider):
 
         return ListResult(results=results, count=count)
 
+    def search_instance(self, filter, page, **options):
+        """配置权限时的搜索框
+        """
+        queryset = Tasks.objects.filter(task_name__contains=filter.keyword).all()
+        count = queryset.count()
+        results = [
+            {"id": str(task.id), "display_name": task.task_name} for task in queryset[page.slice_from : page.slice_to]
+        ]
+        return ListResult(results=results, count=count)
+
     def fetch_instance_info(self, filter, **options):
+        """申请权限时, 回调这个接口进行资源信息正确性/合法性校验
+        """
         ids = []
         if filter.ids:
             ids = [int(i) for i in filter.ids]
@@ -47,16 +52,22 @@ class TaskResourceProvider(ResourceProvider):
         results = [{"id": str(task.id), "display_name": task.task_name} for task in Tasks.objects.filter(id__in=ids)]
         return ListResult(results=results)
 
-    def search_instance(self, filter, page, **options):
+    def list_attr(self, **options):
+        """通过属性配置权限会用到, 没有属性权限管控不需要实现
+        属性列表
         """
-        处理来自 iam 的 search_instance 请求
-        return: ListResult
+        return ListResult(results=[])
+
+    def list_attr_value(self, filter, page, **options):
+        """通过属性配置权限会用到, 没有属性权限管控不需要实现
+        属性值列表
         """
-        queryset = Tasks.objects.filter(task_name__contains=filter.keyword).all()
-        results = [
-            {"id": str(task.id), "display_name": task.task_name} for task in queryset[page.slice_from : page.slice_to]
-        ]
-        return ListResult(results=results, count=0)
+        return ListResult(results=[])
+
+    def list_instance_by_policy(self, filter, page, **options):
+        """权限预览, 暂时没有用到, 可以不实现
+        """
+        return ListResult(results=[], count=0)
 
 
 _iam = IAM(settings.APP_CODE, settings.SECRET_KEY, bk_apigateway_url=settings.BK_IAM_APIGATEWAY_URL)
