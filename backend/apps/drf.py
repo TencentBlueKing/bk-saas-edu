@@ -17,6 +17,7 @@ from apps.constants import (
     MAX_PAGE_SIZE,
 )
 from apps.exceptions import ApiResultError
+from backend.common.constants import ActionEnum
 from common.permission import Permission
 
 logger = logging.getLogger("root")
@@ -101,13 +102,15 @@ def insert_permission_field(
 
     def wrapper(view_func):
         @wraps(view_func)
-        def wrapped_view(*args, **kwargs):
-            response = view_func(*args, **kwargs)
+        def wrapped_view(view, request, *args, **kwargs):
+            response = view_func(view, request, *args, **kwargs)
             result_list = data_field(response.data)
             # todo mock掉相关权限中心操作
             ids = [id_field(item) for item in result_list]
 
-            permissions = Permission().batch_allowed_task_view(response.request.user.username, ids)
+            permissions = {}
+            if action == ActionEnum.TASK_VIEW.value:
+                permissions = Permission().batch_allowed_task_view(request.user.username, ids)
             print("got permissions for list:", permissions)
 
             for item in result_list:
