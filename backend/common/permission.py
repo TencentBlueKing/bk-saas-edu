@@ -70,7 +70,7 @@ class Permission(object):
             None
         )
 
-        return self._iam.batch_allowed(request, resources_list)
+        return self._iam.batch_is_allowed(request, resources_list)
 
     def make_action_application(self, action_id):
         action = ActionWithoutResources(action_id)
