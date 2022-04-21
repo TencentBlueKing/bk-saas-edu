@@ -221,3 +221,24 @@ BK_IAM_APIGATEWAY_URL = f"{BK_COMPONENT_API_URL}/api/bk-iam/prod"
 
 # 权限中心默认的权限申请地址, 用于生成权限申请链接失败时, fallback to this url
 BK_IAM_DEFAULT_APPLY_URL = "https://bkiam.paas-edu.bktencent.com/apply-custom-perm"
+
+# 开启iam logging
+import string
+import random
+log_dir = os.environ.get("LOG_DIR_PREFIX", "/app/v3logs/")
+rand_str = "".join(random.sample(string.ascii_letters + string.digits, 4))
+log_name_prefix = "{}-{}".format(os.environ.get("BKPAAS_PROCESS_TYPE"), rand_str)
+
+LOGGING["handlers"]["iam"] = {
+            'class': "logging.handlers.RotatingFileHandler",
+            'formatter': 'verbose',
+            'filename': os.path.join(log_dir, "%s-iam.log" % log_name_prefix),
+            'maxBytes':  1024 * 1024 * 10,
+            'backupCount': 5
+        }
+LOGGING["loggers"]["iam"] = {
+            'handlers': ['iam'],
+            'level': "DEBUG",
+            'propagate': True,
+        },
+
