@@ -78,12 +78,13 @@ class PermissionViewSet(CustomModelViewSet):
     ):
         action_id = request.GET.get("action_id")
         resource_type = request.GET.get("resource_type")
-        resource_id = request.GET.get("resource_type")
+        resource_id = request.GET.get("resource_id")
         has_permission = PermissionHandler(
             action_id=action_id,
             resource_type=resource_type,
             resource_id=resource_id,
         ).has_permission(request=request)
+        print("has_permission:", has_permission, "action=", action_id)
         return Response({"action_id": action_id, "is_allowed": has_permission})
 
     @action(methods=["GET"], detail=False)
@@ -95,7 +96,7 @@ class PermissionViewSet(CustomModelViewSet):
     ):
         action_id = request.GET.get("action_id")
         resource_type = request.GET.get("resource_type")
-        resource_id = request.GET.get("resource_type")
+        resource_id = request.GET.get("resource_id")
         apply_url = PermissionHandler(
             action_id=action_id,
             resource_type=resource_type,

@@ -24,6 +24,10 @@ import logging
 iam_logger = logging.getLogger("iam")
 iam_logger.setLevel(logging.DEBUG)
 
+debug_hanler = logging.StreamHandler(sys.stdout)
+debug_hanler.setFormatter(logging.Formatter('%(levelname)s [%(asctime)s] [IAM] %(message)s'))
+iam_logger.addHandler(debug_hanler)
+
 
 class Permission(object):
     def __init__(self):
@@ -106,6 +110,8 @@ class Permission(object):
         处理无权限 - 跳转申请列表
         """
         ok, message, url = self._iam.get_apply_url(application, bk_username=bk_username)
+        iam_logger.info("generate apply url for %s, got %s, %s, %s", application, ok, message, url)
+        print("generate apply url for %s, got %s, %s, %s" % (application, ok, message, url))
         if not ok:
             return settings.BK_IAM_DEFAULT_APPLY_URL
         return url
