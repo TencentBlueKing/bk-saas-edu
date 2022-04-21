@@ -218,3 +218,6 @@ BK_IAM_USE_APIGATEWAY = True
 BK_COMPONENT_API_URL = os.environ.get("BK_COMPONENT_API_URL", "")
 BK_IAM_APIGATEWAY_URL = f"{BK_COMPONENT_API_URL}/api/bk-iam/prod"
 # BK_IAM_APIGATEWAY_URL = "http://bk-iam.{APIGATEWAY_DOMAIN}/{env}"
+
+# 权限中心默认的权限申请地址, 用于生成权限申请链接失败时, fallback to this url
+BK_IAM_DEFAULT_APPLY_URL = "https://bkiam.paas-edu.bktencent.com/apply-custom-perm"
