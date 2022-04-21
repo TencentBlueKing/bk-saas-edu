@@ -50,19 +50,19 @@ class TaskResourceProvider(ResourceProvider):
             ids = [int(i) for i in filter.ids]
 
         results = [{"id": str(task.id), "display_name": task.task_name} for task in Tasks.objects.filter(id__in=ids)]
-        return ListResult(results=results)
+        return ListResult(results=results, count=0)
 
     def list_attr(self, **options):
         """通过属性配置权限会用到, 没有属性权限管控不需要实现
         属性列表
         """
-        return ListResult(results=[])
+        return ListResult(results=[], count=0)
 
     def list_attr_value(self, filter, page, **options):
         """通过属性配置权限会用到, 没有属性权限管控不需要实现
         属性值列表
         """
-        return ListResult(results=[])
+        return ListResult(results=[], count=0)
 
     def list_instance_by_policy(self, filter, page, **options):
         """权限预览, 暂时没有用到, 可以不实现
