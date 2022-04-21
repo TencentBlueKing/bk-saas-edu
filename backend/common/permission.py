@@ -70,6 +70,7 @@ class Permission(object):
             None
         )
 
+        # call batch_is_allowed
         return self._iam.batch_is_allowed(request, resources_list)
 
     def make_action_application(self, action_id):
