@@ -17,6 +17,7 @@ from apps.constants import (
     MAX_PAGE_SIZE,
 )
 from apps.exceptions import ApiResultError
+from common.permission import Permission
 
 logger = logging.getLogger("root")
 
@@ -88,8 +89,8 @@ def _error(code=None, message="", data=None, errors=None):
 
 
 def insert_permission_field(
-    actions,
-    resource_meta,
+    action,
+    resource_type,
     id_field: Callable = lambda item: item["id"],
     data_field: Callable = lambda data_list: data_list,
 ):
@@ -104,9 +105,14 @@ def insert_permission_field(
             response = view_func(*args, **kwargs)
             result_list = data_field(response.data)
             # todo mock掉相关权限中心操作
+            ids = [id_field(item) for item in result_list]
+
+            permissions = Permission().batch_allowed_task_view(response.request.user.username, ids)
+            print("got permissions for list:", permissions)
+
             for item in result_list:
                 item.setdefault("permission", {})
-                item["permission"].update({"view_task": True})
+                item["permission"].update({action: permissions.get(id_field(item), False)})
             return response
 
         return wrapped_view

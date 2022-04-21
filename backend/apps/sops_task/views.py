@@ -10,6 +10,7 @@ from apps.sops_task.handlers import (
     TaskHandler,
     TemplateHandler,
 )
+from common.constants import ActionEnum, ResourceTypeEnum
 from apps.sops_task.models import Tasks
 from apps.sops_task.serializers import TaskSerializer
 
@@ -21,8 +22,8 @@ class TaskViewSet(CustomModelViewSet):
     @insert_permission_field(
         id_field=lambda d: d["id"],
         data_field=lambda d: d["info"],
-        actions=[],
-        resource_meta=None,
+        action=ActionEnum.TASK_VIEW.value,
+        resource_type=ResourceTypeEnum.TASK_VIEW.value,
     )
     def list(self, request, *args, **kwargs):
         return TaskHandler().list(request=request, view=self)
