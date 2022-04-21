@@ -63,7 +63,7 @@ class Permission(object):
 
         # 注意这里resources字段空
         request = Request(
-            "bk_sops",
+            settings.BK_IAM_SYSTEM_ID,
             Subject("user", username),
             Action(ActionEnum.TASK_VIEW.value),
             [],
