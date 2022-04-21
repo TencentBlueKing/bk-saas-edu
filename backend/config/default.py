@@ -198,8 +198,12 @@ BK_IAM_MIGRATION_APP_NAME = "bk_iam"
 # 以下逻辑是为了获取自己 saas 部署之后的访问地址, 用于注册iam回调
 bk_saas_addresses_env_value = value = os.environ['BKPAAS_SERVICE_ADDRESSES_BKSAAS']
 bk_saas_addresses = json.loads(base64.b64decode(bk_saas_addresses_env_value).decode('utf-8'))
-stage_only_addr = {item['key']['bk_app_code']: item['value']['stag'] for item in bk_saas_addresses}
-prod_only_addr = {item['key']['bk_app_code']: item['value']['prod'] for item in bk_saas_addresses}
+
+stage_only_addr = {APP_CODE: ""}
+prod_only_addr = {APP_CODE: ""}
+if bk_saas_addresses:
+    stage_only_addr = {item['key']['bk_app_code']: item['value']['stag'] for item in bk_saas_addresses}
+    prod_only_addr = {item['key']['bk_app_code']: item['value']['prod'] for item in bk_saas_addresses}
 
 # 注册的回调地址
 BK_IAM_RESOURCE_API_HOST = (prod_only_addr[APP_CODE] if os.environ.get('BKPAAS_ENVIRONMENT') == 'prod'
