@@ -23,7 +23,7 @@ class TaskViewSet(CustomModelViewSet):
         id_field=lambda d: d["id"],
         data_field=lambda d: d["info"],
         action=ActionEnum.TASK_VIEW.value,
-        resource_type=ResourceTypeEnum.TASK_VIEW.value,
+        resource_type=ResourceTypeEnum.TASK.value,
     )
     def list(self, request, *args, **kwargs):
         return TaskHandler().list(request=request, view=self)
