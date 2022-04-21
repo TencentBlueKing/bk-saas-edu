@@ -28,15 +28,16 @@ class TaskResourceProvider(ResourceProvider):
         return ListResult(results=[])
 
     def list_instance_by_policy(self, filter, page, **options):
-        return ListResult(results=[])
+        return ListResult(results=[], count=0)
 
     def list_instance(self, filter, page, **options):
         queryset = Tasks.objects.all()
+        count = queryset.count()
         results = [
             {"id": str(task.id), "display_name": task.task_name} for task in queryset[page.slice_from : page.slice_to]
         ]
 
-        return ListResult(results=results)
+        return ListResult(results=results, count=count)
 
     def fetch_instance_info(self, filter, **options):
         ids = []
@@ -55,7 +56,7 @@ class TaskResourceProvider(ResourceProvider):
         results = [
             {"id": str(task.id), "display_name": task.task_name} for task in queryset[page.slice_from : page.slice_to]
         ]
-        return ListResult(results=results)
+        return ListResult(results=results, count=0)
 
 
 _iam = IAM(settings.APP_CODE, settings.SECRET_KEY, bk_apigateway_url=settings.BK_IAM_APIGATEWAY_URL)
