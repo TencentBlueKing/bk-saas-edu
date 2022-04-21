@@ -158,8 +158,8 @@ class PermissionHandler(object):
 
     def get_apply_url(self, request):
         # todo mock 权限中心获取apply_data及 url
+        p = Permission()
         if self.action_id == ActionEnum.TASK_VIEW.value:
-            p = Permission()
             application = p.make_task_application(self.resource_id)
             return p.generate_apply_url(application, request.user.username)
         elif self.action_id == ActionEnum.TASK_CREATE.value:
