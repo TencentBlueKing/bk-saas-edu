@@ -102,5 +102,5 @@ class Permission(object):
         """
         ok, message, url = self._iam.get_apply_url(application, bk_username=bk_username)
         if not ok:
-            return ""
-        return
+            return settings.BK_IAM_DEFAULT_APPLY_URL
+        return url
