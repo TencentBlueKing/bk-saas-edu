@@ -17,8 +17,8 @@ from apps.constants import (
     MAX_PAGE_SIZE,
 )
 from apps.exceptions import ApiResultError
-from backend.common.constants import ActionEnum
 from common.permission import Permission
+from common.constants import ActionEnum
 
 logger = logging.getLogger("root")
 
