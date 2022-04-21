@@ -277,11 +277,11 @@
 
             handleCreateDeploy () {
                 this.isCreateLoading = true
-                this.$http.get(`${this.apiPerfix}api/v1/permissions/?action_id=create_ticket`).then((res) => {
+                this.$http.get(`${this.apiPerfix}api/v1/permissions/?action_id=create_task`).then((res) => {
                     if (res?.data?.is_allowed) {
                         this.isShowDialog = true
                     } else {
-                        return this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=create_ticket`).then((res) => {
+                        return this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=create_task`).then((res) => {
                             this.$bkInfo({
                                 title: '暂无权限',
                                 subTitle: '可以点击申请权限！',
