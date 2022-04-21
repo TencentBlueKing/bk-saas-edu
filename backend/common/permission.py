@@ -19,6 +19,11 @@ from iam import IAM, Request, Subject, Action, Resource
 from iam.apply.models import ActionWithoutResources, ActionWithResources, Application, RelatedResourceType, ResourceInstance, ResourceNode
 from common.constants import ActionEnum, ResourceTypeEnum
 
+import sys
+import logging
+iam_logger = logging.getLogger("iam")
+iam_logger.setLevel(logging.DEBUG)
+
 
 class Permission(object):
     def __init__(self):
