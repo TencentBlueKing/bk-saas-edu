@@ -27,6 +27,9 @@ class TaskResourceProvider(ResourceProvider):
     def list_attr_value(self, filter, page, **options):
         return ListResult(results=[])
 
+    def list_instance_by_policy(self, filter, page, **options):
+        return ListResult(results=[])
+
     def list_instance(self, filter, page, **options):
         queryset = Tasks.objects.all()
         results = [
@@ -43,8 +46,17 @@ class TaskResourceProvider(ResourceProvider):
         results = [{"id": str(task.id), "display_name": task.task_name} for task in Tasks.objects.filter(id__in=ids)]
         return ListResult(results=results)
 
-    def list_instance_by_policy(self, filter, page, **options):
-        return ListResult(results=[])
+    def search_instance(self, filter, page, **options):
+        """
+        处理来自 iam 的 search_instance 请求
+        return: ListResult
+        """
+        queryset = Tasks.objects.filter(task_name__contains=filter.keyword).all()
+        results = [
+            {"id": str(task.id), "display_name": task.task_name} for task in queryset[page.slice_from : page.slice_to]
+        ]
+        return ListResult(results=results)
+
 
 _iam = IAM(settings.APP_CODE, settings.SECRET_KEY, bk_apigateway_url=settings.BK_IAM_APIGATEWAY_URL)
 dispatcher = DjangoBasicResourceApiDispatcher(_iam, settings.BK_IAM_SYSTEM_ID)
