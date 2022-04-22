@@ -17,8 +17,6 @@ from apps.constants import (
     MAX_PAGE_SIZE,
 )
 from apps.exceptions import ApiResultError
-from common.permission import Permission
-from common.constants import ActionEnum
 
 logger = logging.getLogger("root")
 
@@ -90,8 +88,8 @@ def _error(code=None, message="", data=None, errors=None):
 
 
 def insert_permission_field(
-    action,
-    resource_type,
+    actions,
+    resource_meta,
     id_field: Callable = lambda item: item["id"],
     data_field: Callable = lambda data_list: data_list,
 ):
@@ -102,20 +100,13 @@ def insert_permission_field(
 
     def wrapper(view_func):
         @wraps(view_func)
-        def wrapped_view(view, request, *args, **kwargs):
-            response = view_func(view, request, *args, **kwargs)
+        def wrapped_view(*args, **kwargs):
+            response = view_func(*args, **kwargs)
             result_list = data_field(response.data)
             # todo mock掉相关权限中心操作
-            ids = [id_field(item) for item in result_list]
-
-            permissions = {}
-            if action == ActionEnum.TASK_VIEW.value:
-                permissions = Permission().batch_allowed_task_view(request.user.username, ids)
-            print("got permissions for list:", permissions)
-
             for item in result_list:
                 item.setdefault("permission", {})
-                item["permission"].update({action: permissions.get(id_field(item), False)})
+                item["permission"].update({"view_task": True})
             return response
 
         return wrapped_view

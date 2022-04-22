@@ -10,7 +10,6 @@ from apps.sops_task.handlers import (
     TaskHandler,
     TemplateHandler,
 )
-from common.constants import ActionEnum, ResourceTypeEnum
 from apps.sops_task.models import Tasks
 from apps.sops_task.serializers import TaskSerializer
 
@@ -22,8 +21,8 @@ class TaskViewSet(CustomModelViewSet):
     @insert_permission_field(
         id_field=lambda d: d["id"],
         data_field=lambda d: d["info"],
-        action=ActionEnum.TASK_VIEW.value,
-        resource_type=ResourceTypeEnum.TASK.value,
+        actions=[],
+        resource_meta=None,
     )
     def list(self, request, *args, **kwargs):
         return TaskHandler().list(request=request, view=self)
@@ -78,13 +77,12 @@ class PermissionViewSet(CustomModelViewSet):
     ):
         action_id = request.GET.get("action_id")
         resource_type = request.GET.get("resource_type")
-        resource_id = request.GET.get("resource_id")
+        resource_id = request.GET.get("resource_type")
         has_permission = PermissionHandler(
             action_id=action_id,
             resource_type=resource_type,
             resource_id=resource_id,
         ).has_permission(request=request)
-        print("has_permission:", has_permission, "action=", action_id)
         return Response({"action_id": action_id, "is_allowed": has_permission})
 
     @action(methods=["GET"], detail=False)
@@ -96,7 +94,7 @@ class PermissionViewSet(CustomModelViewSet):
     ):
         action_id = request.GET.get("action_id")
         resource_type = request.GET.get("resource_type")
-        resource_id = request.GET.get("resource_id")
+        resource_id = request.GET.get("resource_type")
         apply_url = PermissionHandler(
             action_id=action_id,
             resource_type=resource_type,

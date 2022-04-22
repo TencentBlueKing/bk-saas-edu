@@ -13,10 +13,6 @@ modules:
         command:  python manage.py celery worker -l info
       beat:
         command: python manage.py celery beat -l info
-    svc_discovery:
-        bk_saas:
-            - bk_app_code: 'bk-saas-edu-v3'
-              module_name: 'default'
   frontend:
     is_default: False
     language: NodeJS
