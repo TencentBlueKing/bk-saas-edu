@@ -43,8 +43,6 @@ INSTALLED_APPS += (  # noqa
     "rest_framework",
     "django_filters",
     "apps.sops_task",
-    "bk_iam",
-    "iam.contrib.iam_migration",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
@@ -186,6 +184,10 @@ if locals().get("DISABLED_APPS"):
         locals()[_key] = tuple([_item for _item in locals()[_key] if not _item.startswith(_app + ".")])
 
 # 权限中心配置, reference: https://github.com/TencentBlueKing/iam-python-sdk/blob/master/docs/usage.md#2-iam-migration
+INSTALLED_APPS += (  # noqa
+    "bk_iam",
+    "iam.contrib.iam_migration",
+)
 # 系统id, 同app_code一致, here is "bk-saas-edu-v3"
 from config import APP_CODE
 BK_IAM_SYSTEM_ID = APP_CODE
@@ -195,7 +197,7 @@ BK_IAM_MIGRATION_APP_NAME = "bk_iam"
 # 环境的域名地址, 用于注册system是替换掉provider.config.host,
 # 注册的回调地址, 注意, 全局只有一套权限中心, 所以上线到生产换, 一定是生产环境开启;
 # 这里用作测试, 手工配置stag的访问地址 (开发者中心-应用-应用引擎-访问入口)
-BK_IAM_RESOURCE_API_HOST = "http://example.com/default-bkapp-bk-saas-edu-v3-stag/"
+BK_IAM_RESOURCE_API_HOST = "https://apps.paas-edu.bktencent.com/stag--default--bk-saas-edu-v3/"
 # 也可以通过 BKPAAS_SERVICE_ADDRESSES_BKSAAS, app_desc.yaml配置自己app_code到svc_discovery, 配合BKPAAS_ENVIRONMENT获取到
 
 # 使用 APIGateway 对接权限中心, 需要获取 APIGateway 的访问地址
