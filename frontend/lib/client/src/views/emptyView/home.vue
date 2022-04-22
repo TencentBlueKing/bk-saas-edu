@@ -261,7 +261,7 @@
         mounted () {
             this.getRecordList()
         },
-        
+
         methods: {
             getRecordList () {
                 const params = {
@@ -277,11 +277,11 @@
 
             handleCreateDeploy () {
                 this.isCreateLoading = true
-                this.$http.get(`${this.apiPerfix}api/v1/permissions/?action_id=create_task`).then((res) => {
+                this.$http.get(`${this.apiPerfix}api/v1/permissions/?action_id=task_create`).then((res) => {
                     if (res?.data?.is_allowed) {
                         this.isShowDialog = true
                     } else {
-                        return this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=create_task`).then((res) => {
+                        return this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=task_create`).then((res) => {
                             this.$bkInfo({
                                 title: '暂无权限',
                                 subTitle: '可以点击申请权限！',
@@ -354,7 +354,7 @@
             },
 
             handleClickShowTask (row) {
-                if (row.permission.view_task) {
+                if (row.permission.task_view) {
                     this.handleShowTask(row)
                 } else {
                     this.showPermissionDialog(row)
@@ -379,7 +379,7 @@
             },
 
             showPermissionDialog (row) {
-                this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=view_task&resource_type=task&resource_id=${row.id}`).then((res) => {
+                this.$http.get(`${this.apiPerfix}api/v1/permissions/get_apply_url/?action_id=task_view&resource_type=task&resource_id=${row.id}`).then((res) => {
                     this.$bkInfo({
                         title: '暂无权限',
                         subTitle: '可以点击申请权限！',

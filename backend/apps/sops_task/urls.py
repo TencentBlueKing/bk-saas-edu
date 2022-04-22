@@ -16,6 +16,10 @@ router = routers.DefaultRouter()
 router.register("tasks", TaskViewSet, basename="tasks")
 router.register("bizs", BizViewSet, basename="bizs")
 router.register("templates", TemplateViewSet, basename="templates")
-router.register("permissions", PermissionViewSet, basename="permissions")
+# router.register("permissions", PermissionViewSet, basename="permissions")
 
-urlpatterns = [url(r"^", include(router.urls))]
+urlpatterns = [
+    url(r"^", include(router.urls)),
+    url(r"^permissions/$", PermissionViewSet.as_view({"get": "has_permission"}), name="has_permission"),
+    url(r"^permissions/get_apply_url/$", PermissionViewSet.as_view({"get": "get_apply_url"}), name="get_apply_url"),
+]
