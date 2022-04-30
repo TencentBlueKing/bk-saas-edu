@@ -210,6 +210,7 @@ class SopsHandler(object):
     def call_start_task(request, bk_biz_id, task_id):
         client = get_sops_client_by_request(request)
         return client.api.start_task(
+            json={},
             path_params={
                 "bk_biz_id": bk_biz_id,
                 "task_id": task_id,
