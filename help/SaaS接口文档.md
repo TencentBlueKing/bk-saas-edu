@@ -1,7 +1,5 @@
 # 接口文档
 
-**重要说明：请认真阅读以下规范，功能实现且符合规范的接口将酌情加分**
-
 ## 接口规范
 
 ### 1. 接口请求规范
@@ -170,7 +168,7 @@ GET api/v1/tasks/
                 "created_by": "admin",
                 "created_at": "2021-03-09 11:22:07",
                 "status": "FINISHED",
-                "permission":{"view_task": true}
+                "permission":{"task_view": true}
             },
           	...
         ]
@@ -404,7 +402,7 @@ GET api/v1/permissions/has_permission/
 - 请求参数示例
 
 ```json
-?action_id=view_task&resource_type=task&resource_id=10
+?action_id=task_view&resource_type=task&resource_id=10
 or
 ?action_id=create_task
 ```
@@ -422,7 +420,7 @@ or
       "is_allowed": true
     },
     "message": "OK"
-} 
+}
 ```
 
 无权限:
@@ -436,7 +434,7 @@ or
       "is_allowed": false
     },
     "message": "OK"
-} 
+}
 ```
 
 - 返回结果参数说明
@@ -452,7 +450,7 @@ data
 
 | 字段 | 类型   | 必选 | 描述          |
 | :--- | ------ | ---- | ------------- |
-| action_id  | string | 是   | 资源id create_task or view_task|
+| action_id  | string | 是   | 资源id task_create or task_view |
 | is_allowed  | bool | 是   | 是否有权限|
 
 
@@ -467,7 +465,7 @@ GET api/v1/permissions/get_apply_url/
 - 请求参数示例
 
 ```json
-?action_id=view_task&resource_type=task&resource_id=10
+?action_id=task_view&resource_type=task&resource_id=10
 or
 ?action_id=create_task
 ```
@@ -482,7 +480,7 @@ or
       "apply_url": "www.test.com"
     },
     "message": "OK"
-} 
+}
 ```
 
 - 返回结果参数说明
@@ -542,4 +540,5 @@ GET api/v1/tasks/1/
 | code    | int    | 返回码，0表示成功，其他值表示失败 |
 | message | string | 错误信息                          |
 | data    | dict   | 结果                              |
+
 
