@@ -45,7 +45,7 @@ def anything(request):
         "api_name": None,  # 网关名
         "app": None,  # 请求的应用
         "username": None,  # 用户名
-        "headers": {k: v for k, v in request.headers.items() if k.lower().startswith("X-Bkapi-")},  # 网关请求头
+        "headers": {k: v for k, v in request.headers.items()},  # 网关请求头
     }
 
     if hasattr(request, "jwt"):
