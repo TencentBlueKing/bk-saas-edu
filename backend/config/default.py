@@ -184,5 +184,3 @@ if locals().get("DISABLED_APPS"):
         if locals().get(_key) is None:
             continue
         locals()[_key] = tuple([_item for _item in locals()[_key] if not _item.startswith(_app + ".")])
-
-APIGW_PUBLIC_KEY = os.getenv("APIGW_PUBLIC_KEY", "")
