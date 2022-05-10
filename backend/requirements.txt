@@ -29,6 +29,7 @@ blueapps==4.1.2
 
 djangorestframework==3.12.4
 django-filter==2.4.0
-apigw-manager==1.0.7
+apigw-manager>=1.0.8
+bkapi-client-core>=1.1.5
 bkapi-component-open>=1.1.0
 bkapi-bk-sops
