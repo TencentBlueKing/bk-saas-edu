@@ -38,7 +38,7 @@ INSTALLED_APPS += (  # noqa
     "rest_framework",
     "django_filters",
     "apps.sops_task",
-    "apigw_manager",
+    "apigw_manager.apigw",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
