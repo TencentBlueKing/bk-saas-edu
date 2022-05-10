@@ -11,6 +11,7 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 
+from django.http import JsonResponse
 from django.shortcuts import render
 
 
@@ -35,3 +36,23 @@ def contact(request):
     联系页
     """
     return render(request, "home_application/contact.html")
+
+
+def anything(request):
+    result = {
+        "api_name": None,  # 网关名
+        "app": None,  # 请求的应用
+        "username": None,  # 用户名
+        "headers": {k: v for k, v in request.headers.items() if k.lower().startswith("X-Bkapi-")},  # 网关请求头
+    }
+
+    if hasattr(request, "jwt"):
+        result["api_name"] = request.jwt.api_name
+
+    if hasattr(request, "app"):
+        result["app"] = request.app.bk_app_code
+
+    if hasattr(request, "user"):
+        result["username"] = request.user.username
+
+    return JsonResponse(result)
