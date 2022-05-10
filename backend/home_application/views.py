@@ -11,6 +11,7 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 
+from blueapps.account.decorators import login_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -38,6 +39,7 @@ def contact(request):
     return render(request, "home_application/contact.html")
 
 
+@login_exempt
 def anything(request):
     result = {
         "api_name": None,  # 网关名
