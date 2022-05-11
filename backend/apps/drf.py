@@ -101,7 +101,7 @@ def insert_permission_field(
             # todo mock掉相关权限中心操作
             for item in result_list:
                 item.setdefault("permission", {})
-                item["permission"].update({"view_task": True})
+                item["permission"].update({"task_view": True})
             return response
 
         return wrapped_view
