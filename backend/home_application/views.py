@@ -41,7 +41,6 @@ def contact(request):
 
 
 @login_exempt
-@apigw_require
 def anything(request):
     result = {
         "api_name": None,  # 网关名
