@@ -23,5 +23,5 @@ module.exports = merge(prodEnv, {
     USER_INFO_URL: JSON.stringify('/user/getUser'),
     LOGIN_SERVICE_URL: JSON.stringify(process.env.BK_LOGIN_URL),
     AJAX_URL_PREFIX: JSON.stringify('/api'),
-    API_URL: JSON.stringify('http://local.paas-edu.bktencent.com:5000/')
+    API_URL: JSON.stringify('//apps.paas-edu.bktencent.com/stag--default--bk-saas-edu-v3/')
 })
