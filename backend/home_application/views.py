@@ -43,19 +43,8 @@ def contact(request):
 @login_exempt
 def anything(request):
     result = {
-        "api_name": None,  # 网关名
-        "app": None,  # 请求的应用
-        "username": None,  # 用户名
-        "headers": {k: v for k, v in request.headers.items() if k.startswith("X-Bkapi-")},  # 网关请求头
+        "headers": {k: v for k, v in request.headers.items()},
+        "queries": dict(request.GET),
     }
-
-    if hasattr(request, "jwt"):
-        result["api_name"] = request.jwt.api_name
-
-    if hasattr(request, "app"):
-        result["app"] = request.app.bk_app_code
-
-    if hasattr(request, "user"):
-        result["username"] = request.user.username
 
     return JsonResponse(result)

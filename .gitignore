@@ -181,3 +181,4 @@ vetur.config.js
 .codecc
 
 build.yml
+*.sqlite3

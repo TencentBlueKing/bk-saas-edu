@@ -448,10 +448,10 @@ or
 
 data
 
-| 字段 | 类型   | 必选 | 描述          |
-| :--- | ------ | ---- | ------------- |
+| 字段       | 类型   | 必选 | 描述                            |
+| :--------- | ------ | ---- | ------------------------------- |
 | action_id  | string | 是   | 资源id task_create or task_view |
-| is_allowed  | bool | 是   | 是否有权限|
+| is_allowed | bool   | 是   | 是否有权限                      |
 
 
 ## [API-08] 获取授权url
@@ -494,9 +494,9 @@ or
 
 data
 
-| 字段 | 类型   | 必选 | 描述          |
-| :--- | ------ | ---- | ------------- |
-| apply_url  | string | 是   | 授权地址|
+| 字段      | 类型   | 必选 | 描述     |
+| :-------- | ------ | ---- | -------- |
+| apply_url | string | 是   | 授权地址 |
 
 
 
@@ -511,6 +511,49 @@ GET api/v1/tasks/1/
 - 请求参数示例
 
 无
+
+- 返回结果示例
+```json
+{
+    "result": true,
+    "data": {
+        "id": 3,
+        "task_id": 10,
+        "bk_biz_id": 2,
+        "template_id": 1,
+        "task_name": "测试任务",
+        "status": "FAILED",
+        "created_by": "admin",
+        "params": {},
+        "task_url": "http://bk_sops_host/taskflow/execute/3/?instance_id=15364"
+    },
+    "code": 0,
+    "messages": "OK"
+}
+```
+
+- 返回结果参数说明
+
+| 字段    | 类型   | 描述                              |
+| ------- | ------ | --------------------------------- |
+| result  | bool   | 返回结果，true为成功，false为失败 |
+| code    | int    | 返回码，0表示成功，其他值表示失败 |
+| message | string | 错误信息                          |
+| data    | dict   | 结果                              |
+
+
+
+
+## 调试接口
+
+- 请求方法及URL
+```
+GET /anything/
+```
+
+- 请求参数示例
+
+?a=1&b=2
 
 - 返回结果示例
 ```json
