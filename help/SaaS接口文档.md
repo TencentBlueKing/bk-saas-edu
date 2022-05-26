@@ -544,7 +544,7 @@ GET api/v1/tasks/1/
 
 
 
-## 调试接口
+## 调试接口(返回请求上下文)
 
 - 请求方法及URL
 ```
@@ -558,20 +558,16 @@ GET /anything/
 - 返回结果示例
 ```json
 {
-    "result": true,
-    "data": {
-        "id": 3,
-        "task_id": 10,
-        "bk_biz_id": 2,
-        "template_id": 1,
-        "task_name": "测试任务",
-        "status": "FAILED",
-        "created_by": "admin",
-        "params": {},
-        "task_url": "http://bk_sops_host/taskflow/execute/3/?instance_id=15364"
-    },
-    "code": 0,
-    "messages": "OK"
+  "code": 0,
+  "headers": {
+    "X-Forwarded-Host": "apps.paas-edu.bktencent.com",
+    "X-Forwarded-Port": "80",
+    "X-Forwarded-Proto": "https",
+    "X-Scheme": "https",
+  },
+  "queries": {
+    "a": ["1"]
+  }
 }
 ```
 
@@ -582,6 +578,7 @@ GET /anything/
 | result  | bool   | 返回结果，true为成功，false为失败 |
 | code    | int    | 返回码，0表示成功，其他值表示失败 |
 | message | string | 错误信息                          |
-| data    | dict   | 结果                              |
+| headers | dict   | 请求头                            |
+| queries | dict   | 请求参数                          |
 
 
