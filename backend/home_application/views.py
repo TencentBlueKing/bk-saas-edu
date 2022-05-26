@@ -46,8 +46,6 @@ def anything(request):
         "code": 0,
         "result": True,
         "message": "success",
-        "headers": {k: v for k, v in request.headers.items()},
-        "queries": dict(request.GET),
     }
 
     return JsonResponse(result)
