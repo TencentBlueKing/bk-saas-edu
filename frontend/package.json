@@ -24,7 +24,8 @@
         "BK_LOGIN_URL": "http://paas-edu.bktencent.com:80/login/",
         "BKPAAS_APP_ID": "",
         "BKPAAS_APP_SECRET": "",
-        "BK_PAAS2_INNER_URL": "http://paas-edu.bktencent.com:80"
+        "BK_PAAS2_INNER_URL": "http://paas-edu.bktencent.com:80",
+        "BK_COMPONENT_API_URL": "http://bkapi.paas-edu.bktencent.com"
       }
     },
     "dev": {
@@ -35,7 +36,8 @@
         "BK_LOGIN_URL": "http://paas-edu.bktencent.com:80/login/",
         "BKPAAS_APP_ID": "",
         "BKPAAS_APP_SECRET": "",
-        "BK_PAAS2_INNER_URL": "http://paas-edu.bktencent.com:80"
+        "BK_PAAS2_INNER_URL": "http://paas-edu.bktencent.com:80",
+        "BK_COMPONENT_API_URL": "http://bkapi.paas-edu.bktencent.com"
       }
     },
     "local": {
