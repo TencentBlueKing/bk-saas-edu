@@ -43,6 +43,7 @@ def contact(request):
 @login_exempt
 def anything(request):
     result = {
+        "code": 0,
         "headers": {k: v for k, v in request.headers.items()},
         "queries": dict(request.GET),
     }
