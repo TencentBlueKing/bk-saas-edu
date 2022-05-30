@@ -109,7 +109,7 @@ def insert_permission_field(
             ids = [id_field(item) for item in result_list]
 
             permissions = {}
-            if action == ActionEnum.TASK_VIEW.value:
+            if action == ActionEnum.TASK_VIEW.value and ids:
                 permissions = Permission().batch_allowed_task_view(request.user.username, ids)
             print("got permissions for list:", permissions)
 
