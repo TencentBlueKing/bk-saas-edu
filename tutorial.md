@@ -273,6 +273,7 @@ git remote add origin <项目仓库地址>
   BK_LOGIN_URL=http://paas-edu.bktencent.com:80/login/
   PIP_EXTRA_INDEX_URL=http://bkrepo.paas-edu.bktencent.com/pypi/bkpaas/pypi/simple
   BK_API_URL_TMPL=http://bkapi.paas-edu.bktencent.com/api/
+  BKAPP_CORS_ENABLED=off
   BKPAAS_APP_ID=<bk_app_code的内容>
   BKPAAS_APP_SECRET=<bk_app_secret的内容>
   ```
@@ -455,9 +456,11 @@ git push origin dev
 
 ![](src/tutorial/2022-05-31-10-18-21-image.png)
 
-![](src/tutorial/2022-05-31-10-25-52-image.png)
+进入环境配置页面，增加环境变量 `API_URL=//apps.paas-edu.bktencent.com/stag--default--<你的app_code>/`， 生效范围选择 **预发布环境**
 
 点击部署
+
+![](src/tutorial/2022-05-31-10-25-52-image.png)
 
 ![](src/tutorial/2022-05-31-10-24-48-image.png)
 
