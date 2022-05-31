@@ -4,12 +4,7 @@ from django.conf.urls import url
 from django.urls import include
 from rest_framework import routers
 
-from apps.sops_task.views import (
-    TaskViewSet,
-    BizViewSet,
-    TemplateViewSet,
-    PermissionViewSet,
-)
+from apps.sops_task.views import BizViewSet, PermissionViewSet, TaskViewSet, TemplateViewSet
 
 router = routers.DefaultRouter()
 

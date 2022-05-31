@@ -43,6 +43,7 @@ INSTALLED_APPS += (  # noqa
     "rest_framework",
     "django_filters",
     "apps.sops_task",
+    "apigw_manager.apigw",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
@@ -71,7 +72,13 @@ INSTALLED_APPS += (  # noqa
 # )
 
 # 自定义中间件
-MIDDLEWARE += ()  # noqa
+MIDDLEWARE += (
+    "apigw_manager.apigw.authentication.ApiGatewayJWTGenericMiddleware",  # JWT 认证
+    "apigw_manager.apigw.authentication.ApiGatewayJWTAppMiddleware",  # JWT 透传的应用信息
+    "apigw_manager.apigw.authentication.ApiGatewayJWTUserMiddleware",  # JWT 透传的用户信息
+)  # noqa
+
+AUTHENTICATION_BACKENDS += ("apigw_manager.apigw.authentication.UserModelBackend",)
 
 # 默认数据库AUTO字段类型
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
@@ -208,3 +215,4 @@ BK_IAM_APIGATEWAY_URL = f"{BK_COMPONENT_API_URL}/api/bk-iam/prod"
 
 # 权限中心默认的权限申请地址, 用于生成权限申请链接失败时, fallback to this url
 BK_IAM_DEFAULT_APPLY_URL = "https://bkiam.paas-edu.bktencent.com/apply-custom-perm"
+
