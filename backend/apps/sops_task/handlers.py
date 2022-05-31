@@ -193,8 +193,13 @@ class SopsHandler(object):
     def call_create_task(
         request, bk_biz_id, template_id, task_name, params: dict = None
     ):
-        params = params or {}
-        params["name"] = task_name
+        params = {
+            "constants": {
+                key if key.startswith("$") else f"${{{key}}}": value
+                for key, value in (params or {}).items()
+            },
+            "name": task_name,
+        }
 
         client = get_sops_client_by_request(request)
         return client.api.create_task(
