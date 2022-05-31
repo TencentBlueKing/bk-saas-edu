@@ -1,20 +1,20 @@
 spec_version: 2
 modules:
   default:
-    is_default: True
+    is_default: False
     language: Python
     source_dir: backend
     scripts:
-      pre_release_hook: "python manage.py migrate --no-input"
+      pre_release_hook: "bash bin/pre-release.sh"
     processes:
       web:
         command: gunicorn wsgi -w 4 -b :$PORT --access-logfile - --error-logfile - --access-logformat '[%(h)s] %({request_id}i)s %(u)s %(t)s "%(r)s" %(s)s %(D)s %(b)s "%(f)s" "%(a)s"'
       celery:
-        command:  python manage.py celery worker -l info
+        command: python manage.py celery worker -l info
       beat:
         command: python manage.py celery beat -l info
   frontend:
-    is_default: False
+    is_default: True
     language: NodeJS
     source_dir: frontend
     processes:

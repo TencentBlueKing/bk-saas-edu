@@ -38,6 +38,7 @@ INSTALLED_APPS += (  # noqa
     "rest_framework",
     "django_filters",
     "apps.sops_task",
+    "apigw_manager.apigw",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
@@ -66,7 +67,13 @@ INSTALLED_APPS += (  # noqa
 # )
 
 # 自定义中间件
-MIDDLEWARE += ()  # noqa
+MIDDLEWARE += (
+    "apigw_manager.apigw.authentication.ApiGatewayJWTGenericMiddleware",  # JWT 认证
+    "apigw_manager.apigw.authentication.ApiGatewayJWTAppMiddleware",  # JWT 透传的应用信息
+    "apigw_manager.apigw.authentication.ApiGatewayJWTUserMiddleware",  # JWT 透传的用户信息
+)  # noqa
+
+AUTHENTICATION_BACKENDS += ("apigw_manager.apigw.authentication.UserModelBackend",)
 
 # 默认数据库AUTO字段类型
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
@@ -176,6 +183,4 @@ if locals().get("DISABLED_APPS"):
     for _app, _key in itertools.product(DISABLED_APPS, _keys):
         if locals().get(_key) is None:
             continue
-        locals()[_key] = tuple(
-            [_item for _item in locals()[_key] if not _item.startswith(_app + ".")]
-        )
+        locals()[_key] = tuple([_item for _item in locals()[_key] if not _item.startswith(_app + ".")])

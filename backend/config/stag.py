@@ -52,6 +52,4 @@ if FRONTEND_BACKEND_SEPARATION:
 
 DEBUG = True
 
-CSRF_TRUSTED_ORIGINS = (
-    "apps.paas-edu.bktencent.com",
-)
+CSRF_TRUSTED_ORIGINS = ("apps.paas-edu.bktencent.com",)

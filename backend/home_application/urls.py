@@ -19,4 +19,5 @@ urlpatterns = (
     url(r"^$", views.home),
     url(r"^dev-guide/$", views.dev_guide),
     url(r"^contact/$", views.contact),
+    url(r"^anything/$", views.anything),
 )
