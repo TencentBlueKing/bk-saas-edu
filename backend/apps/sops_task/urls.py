@@ -11,6 +11,7 @@ router = routers.DefaultRouter()
 router.register("tasks", TaskViewSet, basename="tasks")
 router.register("bizs", BizViewSet, basename="bizs")
 router.register("templates", TemplateViewSet, basename="templates")
+# router.register("permissions", PermissionViewSet, basename="permissions")
 
 urlpatterns = [
     url(r"^", include(router.urls)),
