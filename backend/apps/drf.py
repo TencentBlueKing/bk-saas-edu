@@ -49,15 +49,8 @@ def custom_exception_handler(exc, context):
 
     # 处理 Data APP 自定义异常
     if isinstance(exc, BaseException):
-        _msg = _("【APP 自定义异常】{message}, code={code}, args={args}").format(
-            message=exc.message,
-            code=exc.code,
-            args=exc.args,
-            data=exc.data,
-            errors=exc.errors,
-        )
-        logger.exception(_msg)
-        return JsonResponse(_error(exc.code, exc.message, exc.data, exc.errors))
+        logger.exception(exc)
+        return JsonResponse(_error("500", str(exc)))
 
     # 判断是否在debug模式中,
     # 在这里判断是防止阻止了用户原本主动抛出的异常
