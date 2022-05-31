@@ -11,6 +11,11 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 
+import os
+import json
+import os
+import base64
+
 from blueapps.conf.default_settings import *  # noqa
 from blueapps.conf.log import get_logging_config_dict
 
@@ -146,8 +151,8 @@ TIME_ZONE = "Asia/Shanghai"
 LANGUAGE_CODE = "zh-hans"
 
 LANGUAGES = (
-    ("en", u"English"),
-    ("zh-hans", u"简体中文"),
+    ("en", "English"),
+    ("zh-hans", "简体中文"),
 )
 
 """
@@ -184,3 +189,30 @@ if locals().get("DISABLED_APPS"):
         if locals().get(_key) is None:
             continue
         locals()[_key] = tuple([_item for _item in locals()[_key] if not _item.startswith(_app + ".")])
+
+# 权限中心配置, reference: https://github.com/TencentBlueKing/iam-python-sdk/blob/master/docs/usage.md#2-iam-migration
+INSTALLED_APPS += (  # noqa
+    "bk_iam",
+    "iam.contrib.iam_migration",
+)
+# 系统id, 同app_code一致, here is "bk-saas-edu-v3"
+from config import APP_CODE
+BK_IAM_SYSTEM_ID = APP_CODE
+# 用于存放iam django migration文件的app
+BK_IAM_MIGRATION_APP_NAME = "bk_iam"
+
+# 环境的域名地址, 用于注册system是替换掉provider.config.host,
+# 注册的回调地址, 注意, 全局只有一套权限中心, 所以上线到生产换, 一定是生产环境开启;
+# 这里用作测试, 手工配置stag的访问地址 (开发者中心-应用-应用引擎-访问入口)
+BK_IAM_RESOURCE_API_HOST = "https://apps.paas-edu.bktencent.com/stag--default--bk-saas-edu-v3/"
+# 也可以通过 BKPAAS_SERVICE_ADDRESSES_BKSAAS, app_desc.yaml配置自己app_code到svc_discovery, 配合BKPAAS_ENVIRONMENT获取到
+
+# 使用 APIGateway 对接权限中心, 需要获取 APIGateway 的访问地址
+BK_IAM_USE_APIGATEWAY = True
+# https://bkapi.paas-edu.bktencent.com
+BK_COMPONENT_API_URL = os.environ.get("BK_COMPONENT_API_URL", "")
+BK_IAM_APIGATEWAY_URL = f"{BK_COMPONENT_API_URL}/api/bk-iam/prod"
+
+# 权限中心默认的权限申请地址, 用于生成权限申请链接失败时, fallback to this url
+BK_IAM_DEFAULT_APPLY_URL = "https://bkiam.paas-edu.bktencent.com/apply-custom-perm"
+

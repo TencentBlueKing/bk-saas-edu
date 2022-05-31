@@ -1,0 +1,89 @@
+{
+    "system_id": "bk-saas-edu-v3",
+    "operations": [
+        {
+            "operation": "upsert_system",
+            "data": {
+                "id": "bk-saas-edu-v3",
+                "name": "SaaS开发课程项目",
+                "name_en": "bk-saas-edu",
+                "description": "A demo SaaS for quick start",
+                "description_en": "A demo SaaS for quick start.",
+                "clients": "bk-saas-edu",
+                "provider_config": {
+                    "host": "http://127.0.0.1:5000",
+                    "auth": "basic",
+                    "healthz": "/healthz/"
+                }
+            }
+        },
+        {
+            "operation": "upsert_action",
+            "data": {
+                "id": "task_create",
+                "name": "任务创建",
+                "name_en": "task-create",
+                "description": "任务创建权限",
+                "description_en": "Is allowed to create a task",
+                "type": "create",
+                "related_resource_types": [],
+                "version": 1
+            }
+        },
+        {
+            "operation": "upsert_resource_type",
+            "data": {
+                "id": "task",
+                "name": "任务",
+                "name_en": "task",
+                "description": "任务",
+                "description_en": "Task",
+                "provider_config": {
+                    "path": "/api/v1/iam/tasks"
+                },
+                "version": 1
+            }
+        },
+        {
+            "operation": "upsert_instance_selection",
+            "data": {
+                "id": "task_list",
+                "name": "任务列表",
+                "name_en": "task_list",
+                "resource_type_chain": [
+                    {
+                        "system_id": "bk-saas-edu-v3",
+                        "id": "task"
+                    }
+                ]
+            }
+        },
+        {
+            "operation": "upsert_action",
+            "data": {
+                "id": "task_view",
+                "name": "任务查看",
+                "name_en": "task_view",
+                "description": "一个用户是否能够查看某个任务",
+                "description_en": "Is allowed to view a task",
+                "type": "view",
+                "related_resource_types": [
+                    {
+                        "system_id": "bk-saas-edu-v3",
+                        "id": "task",
+                        "name_alias": "",
+                        "name_alias_en": "",
+                        "related_instance_selections": [
+                            {
+                                "system_id": "bk-saas-edu-v3",
+                                "id": "task_list"
+                            }
+                        ]
+                    }
+                ],
+                "version": 1
+            }
+        }
+    ]
+}
+

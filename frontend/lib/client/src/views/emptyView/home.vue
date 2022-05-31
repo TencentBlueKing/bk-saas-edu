@@ -261,7 +261,7 @@
         mounted () {
             this.getRecordList()
         },
-        
+
         methods: {
             getRecordList () {
                 const params = {
