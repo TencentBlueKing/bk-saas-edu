@@ -272,8 +272,9 @@ git remote add origin <项目仓库地址>
   BK_COMPONENT_API_URL=https://bkapi.paas-edu.bktencent.com
   BK_LOGIN_URL=http://paas-edu.bktencent.com:80/login/
   PIP_EXTRA_INDEX_URL=http://bkrepo.paas-edu.bktencent.com/pypi/bkpaas/pypi/simple
-  BK_API_URL_TMPL=http://bkapi.paas-edu.bktencent.com/api/
+  BK_API_URL_TMPL=http://bkapi.paas-edu.bktencent.com/api/{api_name}
   BKAPP_CORS_ENABLED=off
+  BKAPP_CSRF_COOKIE_DOMAIN=paas-edu.bktencent.com
   BKPAAS_APP_ID=<bk_app_code的内容>
   BKPAAS_APP_SECRET=<bk_app_secret的内容>
   ```
