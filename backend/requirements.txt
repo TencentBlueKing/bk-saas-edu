@@ -32,6 +32,6 @@ bk-iam==1.2.0
 djangorestframework==3.12.4
 django-filter==2.4.0
 apigw-manager>=1.0.9
-bkapi-client-core>=1.1.5
+bkapi-client-core>=1.1.6
 bkapi-component-open>=1.1.0
 bkapi-bk-sops
