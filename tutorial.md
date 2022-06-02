@@ -68,7 +68,6 @@ git clone git@github.com:TencentBlueKing/bk-saas-edu.git
 点击OK即可基于 Python3.6 创建一个虚拟环境
 
 
-
 ## 下载依赖
 
 点击Pycharm左下角的terminal，打开命令行终端
@@ -185,18 +184,21 @@ git remote add origin <项目仓库地址>
 
 # 本地启动
 
-- 获取蓝鲸SaaS应用ID和TOKEN
+## 准备工作
+
+### 获取蓝鲸SaaS应用ID和TOKEN
+
   打开开发者中心 https://bkpaas.paas-edu.bktencent.com/ ， 进入创建的蓝鲸应用
   
   ![](src/tutorial/2022-05-27-14-24-14-image.png)
   
-  点击”基本设置“->”基本信息“
+  点击`基本设置`->`基本信息`
   
   ![](src/tutorial/2022-05-27-14-24-48-image.png)
   
   如图所示，`bk_app_code` 为应用ID，而`bk_app_secret`为应用鉴权TOKEN，这两个变量在之后的环境变量配置会用到。
 
-- 创建数据库
+### 创建数据库
   
   打开命令行终端，输入下列指令进入MySQL：
   
@@ -216,7 +218,7 @@ git remote add origin <项目仓库地址>
   
   创建数据库成功
 
-- 配置数据库
+### 配置数据库
   打开Pycharm，在`bk-saas-edu/backend/`中新建`local_settings.py`
   
   在该文件中输入数据库配置：
@@ -238,7 +240,7 @@ git remote add origin <项目仓库地址>
   
   ![](src/tutorial/2022-05-27-15-48-38-image.png)
 
-- 修改iam迁移文件
+### 修改iam迁移文件
   
   打开`backend/support-files/iam/0001_bk_saas_edu_20220321-1505.json`
   
@@ -246,11 +248,11 @@ git remote add origin <项目仓库地址>
   
   ![](src/tutorial/2022-05-27-16-15-33-image.png)
   
-  修改项目信息介绍，修改成自己项目的信息即可
+  修改项目信息介绍，修改成自己项目的信息即可，至少需要修改`name`, `name_en`, `clients`的内容
   
   ![](src/tutorial/2022-05-27-16-16-03-image.png)
 
-- 数据库迁移
+### 数据库迁移
   ![](src/tutorial/2022-05-27-14-41-13-image.png)
   
   如图进入配置页面，点击添加Python
@@ -279,8 +281,9 @@ git remote add origin <项目仓库地址>
   BKPAAS_APP_SECRET=<bk_app_secret的内容>
   ```
   
-  ![](src/tutorial2022-05-27-14-50-34-image.png)
+  ![](src/tutorial/2022-06-02-13-33-58-image.png)
   
+
   点击运行
   
   ![](src/tutorial/2022-05-27-15-50-13-image.png)
@@ -291,7 +294,7 @@ git remote add origin <项目仓库地址>
 
 ## 本地运行后端
 
-- 修改本地host  
+### 修改本地host  
 
 修改`C:/Windows/System32/drivers/etc/hosts`，添加
 
@@ -299,7 +302,7 @@ git remote add origin <项目仓库地址>
 127.0.0.1 local.paas-edu.bktencent.com
 ```
 
-- Django配置
+### Django配置
 
 ![](src/tutorial/2022-05-27-16-26-51-image.png)
 
@@ -307,27 +310,44 @@ git remote add origin <项目仓库地址>
 
 配置环境变量内容与上面一样
 
-- 本地运行Django
+### 本地运行Django
   
   ![](src/tutorial/2022-05-27-16-28-45-image.png)
   
   ![](src/tutorial/2022-05-30-11-04-02-image.png)
   
   
-- 运行celery
-配置celery worker和 celery beat
+### 运行celery
 
-  ![](src/tutorial/2022-05-31-12-36-58-image.png)
+- 配置并运行 celery worker
   
-  ![](src/tutorial/2022-05-31-12-37-58-image.png)
+  ```
+  python manage.py celery worker --pool=solo -l info
+  ```
+
+  ![](src/tutorial/2022-06-02-12-30-58-image.png)
+
+  ![](src/tutorial/2022-06-02-13-31-58-image.png)
   
-分别运行 celery worker和 celery beat
+
+  
+- 配置并运行 celery beat
+
+  ```
+  python manage.py celery beat -l info
+  ```
+
+  ![](src/tutorial/2022-06-02-12-31-58-image.png)
 
   ![](src/tutorial/2022-05-31-12-38-58-image.png)
   
-  ![](src/tutorial/2022-05-31-12-39-58-image.png)
 
-- 访问后端服务
+
+若重新运行celery beat报错的话，请删除`backend/celerybeat.pid`后，重新运行celery beat
+
+
+### 访问后端服务
+
   点击链接或访问`http://local.paas-edu.bktencent.com:5000/`可打开如下页面：
   
   ![](src/tutorial/2022-05-27-16-29-46-image.png)
@@ -340,7 +360,7 @@ git remote add origin <项目仓库地址>
   
   若想重新安装，请将`frontend`目录下的`package-lock.json`, `node_modules/`, `lib/client/.webpack_cache/` 删除后，重新执行上述命令
 
-- 配置环境变量
+### 配置环境变量
   修改 `frontend/package.json`，
   
   - 填写`BKPAAS_APP_ID` 和 `APP_CODE`，内容为创建的应用`bk_app_code`
@@ -349,7 +369,7 @@ git remote add origin <项目仓库地址>
   
   ![](src/tutorial/2022-05-31-11-15-00-image.png)
 
-- 本地启动前端服务
+### 本地启动前端服务
   
   ```
   npm run dev
@@ -365,6 +385,59 @@ git remote add origin <项目仓库地址>
   
   **注意：新建部署功能需要蓝鲸权限中心授权，请联系蓝鲸平台管理员进行权限审批**
   
+# 本地开发配置
+
+## 加入用户组（必选）
+
+![](src/tutorial/2022-06-02-11-30-58-image.png)
+
+选择业务需要先获取业务权限，我们需要申请加入到权限中心 **课堂练习专用** 的用户组
+
+### 申请权限
+
+打开权限中心：`https://bkiam.paas-edu.bktencent.com/apply-join-user-group?limit=10&current=1`
+
+![](src/tutorial/2022-06-02-11-28-58-image.png)
+
+
+**申请后，请联系蓝鲸平台管理员进行权限审批**
+
+申请成功后即可获取到业务列表：
+
+![](src/tutorial/2022-06-02-11-29-58-image.png)
+
+## 申请云 API 权限（必选）
+
+打开开发者中心->`云 API 管理`->`云 API 权限`，选择`网关API`-`bk-sops`，批量申请申请下列API权限：
+- get_template_list ---	查询业务下的模板列表
+- get_template_info --- 查询业务下的单个模板详情
+- create_task --- 通过业务流程模板创建任务
+- start_task --- 开始执行任务
+- get_task_status --- 查询任务执行状态
+
+![](src/tutorial/2022-06-02-10-44-58-image.png)
+
+![](src/tutorial/2022-06-02-10-45-58-image.png)
+
+![](src/tutorial/2022-06-02-10-46-58-image.png)
+  
+  **申请后，请联系蓝鲸平台管理员进行权限审批**
+
+## 跳过权限中心的权限校验(可选)
+
+后端服务内置了权限中心校验包括获取项目流程模板、创建任务、启动任务、查看任务的权限，若需要跳过权限校验，则可配置环境变量`BK_IAM_SKIP`为`True`
+
+修改`backend/local_settings.py`，增加`BK_IAM_SKIP=True`
+
+![](src/tutorial/2022-06-02-13-32-58-image.png)
+
+
+## 本地前后端联调（可选）
+
+若需要调用本地的后端服务，则需要修改前端的配置：修改`frontend/lib/client/build/dev.env.js`中的`API_URL`，原设置为调用预发布环境的后端服务，本地联调需要改为本地的后端服务地址，如`//local.paas-edu.bktencent.com:5000/`
+
+![](src/tutorial/2022-06-01-12-59-58-image.png)
+
 
 # 部署SaaS
 
@@ -425,20 +498,22 @@ git push origin dev
 
 ## 部署预发布环境
 
+### 合入代码到stag分支
+
 - 新建Pull Request
 
-![](src/tutorial/2022-05-30-15-30-38-image.png)
+  ![](src/tutorial/2022-05-30-15-30-38-image.png)
 
-![](src/tutorial/2022-05-31-10-06-04-image.png)
+  ![](src/tutorial/2022-05-31-10-06-04-image.png)
 
-- 合入代码到stag分支
+- 合入代码
 
-![](src/tutorial/2022-05-31-10-29-55-image.png)
+  ![](src/tutorial/2022-05-31-10-29-55-image.png)
 
 
-![](src/tutorial/2022-05-31-10-10-03-image.png)
+  ![](src/tutorial/2022-05-31-10-10-03-image.png)
 
-- 部署预发布环境--后端服务
+### 部署预发布环境--后端服务
 
 进入开发者中心项目概览，切换模块至`default`模块
 
@@ -452,15 +527,17 @@ git push origin dev
 
 
 
-- 部署预发布环境--前端服务
+### 部署预发布环境--前端服务
 
-切换至frontend模块
+- 切换至frontend模块
 
 ![](src/tutorial/2022-05-31-10-18-21-image.png)
 
 进入环境配置页面，增加环境变量 `API_URL=//apps.paas-edu.bktencent.com/stag--default--<你的app_code>/`， 生效范围选择 **预发布环境**
 
-点击部署
+![](src/tutorial/2022-06-01-10-19-58-image.png)
+
+- 点击部署
 
 ![](src/tutorial/2022-05-31-10-25-52-image.png)
 
