@@ -57,10 +57,14 @@ class Permission(object):
         return request
 
     def allowed_task_create(self, username: str) -> bool:
+        if getattr(settings, "BK_IAM_SKIP", False):
+            return True
         request = self._make_request_without_resources(username, ActionEnum.TASK_CREATE.value)
         return self._iam.is_allowed(request)
 
     def allowed_task_view(self, username: str, task_id: str) -> bool:
+        if getattr(settings, "BK_IAM_SKIP", False):
+            return True
         r = Resource(settings.BK_IAM_SYSTEM_ID, ResourceTypeEnum.TASK.value, task_id, {})
         resources = [r]
         request = self._make_request_with_resources(username, ActionEnum.TASK_VIEW.value, resources)
@@ -68,6 +72,8 @@ class Permission(object):
 
     def batch_allowed_task_view(self, username: str, task_ids: List[str]) -> Dict[str, bool]:
         resources_list = []
+        if getattr(settings, "BK_IAM_SKIP", False):
+            return dict.fromkeys(task_ids, True)
         for task_id in task_ids:
             r = Resource(settings.BK_IAM_SYSTEM_ID, ResourceTypeEnum.TASK.value, task_id, {})
             resources = [r]
