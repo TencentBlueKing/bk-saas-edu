@@ -216,3 +216,5 @@ BK_IAM_APIGATEWAY_URL = f"{BK_COMPONENT_API_URL}/api/bk-iam/prod"
 # 权限中心默认的权限申请地址, 用于生成权限申请链接失败时, fallback to this url
 BK_IAM_DEFAULT_APPLY_URL = "https://bkiam.paas-edu.bktencent.com/apply-custom-perm"
 
+# 控制权限中心校验豁免
+BK_IAM_SKIP = os.environ.get("BK_IAM_SKIP", False)
