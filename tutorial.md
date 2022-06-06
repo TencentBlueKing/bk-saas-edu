@@ -514,6 +514,12 @@ git push origin dev
 
 ![](src/tutorial/2022-06-02-14-33-58-image.png)
 
+### - 配置权限校验豁免环境变量--后端服务
+
+若**线上部署**需要跳过权限中心的权限校验，则进入开发者中心的环境配置界面，增加环境变量 `BK_IAM_SKIP=True`， 生效范围选择 **所有环境**
+
+![](src/tutorial/2022-06-06-16-33-58-image.png)
+
 ### - 配置前端环境变量调用后端服务--前端服务
 
 切换至frontend模块
@@ -527,6 +533,9 @@ git push origin dev
 增加环境变量 `API_URL=//apps.paas-edu.bktencent.com/prod--default--<你的app_code>/`， 生效范围选择 **生产环境**
 
 ![](src/tutorial/2022-06-02-15-33-58-image.png)
+
+
+**请注意以上提到的开发者中心配置的环境变量，在配置后需要重新部署才能生效**
 
 ## 部署预发布环境
 
