@@ -10,6 +10,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
+from blueapps.conf.validators import EnvValidator
+
 from config import RUN_VER
 from config.default import FRONTEND_BACKEND_SEPARATION
 
@@ -67,3 +69,5 @@ try:
     from local_settings import *  # noqa
 except ImportError:
     pass
+
+EnvValidator(RUN_VER).validate()
